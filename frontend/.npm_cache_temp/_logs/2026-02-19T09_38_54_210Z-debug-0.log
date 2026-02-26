@@ -1,0 +1,11 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\Kishore\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.0
+2 info using node@v22.14.0
+3 silly config load:file:C:\Users\Kishore\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:D:\bikehouse\frontend\.npmrc
+5 silly config load:file:C:\Users\Kishore\.npmrc
+6 silly config load:file:C:\Users\Kishore\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install axios
+8 verbose argv "install" "axios" "--no-proxy" "--no-bin-links" "--no-package-lock" "--loglevel" "verbose"
+9 verbose logfile logs-max:10 dir:D:\bikehouse\frontend\.npm_cache_temp\_logs\2026-02-19T09_38_54_210Z-
+10 verbose logfile D:\bikehouse\frontend\.npm_cache_temp\_logs\2026-02-19T09_38_54_210Z-debug-0.log
