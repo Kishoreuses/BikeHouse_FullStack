@@ -3,11 +3,7 @@ import axios from 'axios';
 import {
     Container,
     Typography,
-    Paper,
     Grid,
-    List,
-    ListItem,
-    ListItemText,
     Box,
     CircularProgress,
     Button,
@@ -20,9 +16,7 @@ import {
     CardContent,
     Avatar,
     Chip,
-    IconButton,
-    Divider,
-    LinearProgress
+    Divider
 } from '@mui/material';
 import {
     BarChart,
@@ -31,12 +25,7 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
-    CartesianGrid,
-    PieChart,
-    Pie,
-    Cell,
-    LineChart,
-    Line
+    CartesianGrid
 } from 'recharts';
 import {
     People as PeopleIcon,
@@ -46,14 +35,7 @@ import {
     AdminPanelSettings as AdminIcon,
     CheckCircle as CheckIcon,
     Cancel as CancelIcon,
-    Visibility as ViewIcon,
-    Edit as EditIcon,
-    Delete as DeleteIcon,
-    Star as StarIcon,
-    Notifications as NotificationIcon,
-    Dashboard as DashboardIcon,
-    Assessment as AssessmentIcon,
-    Business as BusinessIcon
+    Assessment as AssessmentIcon
 } from '@mui/icons-material';
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -72,7 +54,7 @@ const royalColors = {
     textSecondary: '#546e7a'
 };
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+
 
 function AdminDashboard() {
     const [stats, setStats] = useState({});

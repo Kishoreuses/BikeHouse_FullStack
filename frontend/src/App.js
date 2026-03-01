@@ -14,17 +14,6 @@ import BikeDetails from './pages/BikeDetails';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function isAdmin() {
-  const token = localStorage.getItem('token');
-  if (!token) return false;
-  try {
-    const user = JSON.parse(atob(token.split('.')[1]));
-    return user.role === 'admin';
-  } catch {
-    return false;
-  }
-}
-
 function SalesDetails() {
   const token = localStorage.getItem('token');
   const user = token ? JSON.parse(atob(token.split('.')[1])) : null;
