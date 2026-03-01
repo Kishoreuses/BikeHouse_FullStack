@@ -47,7 +47,7 @@ function Signup() {
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
     try {
-      const response = await axios.post('http://localhost:5000/api/users/signup', form);
+      await axios.post('http://localhost:5000/api/users/signup', form);
       setMessage('Signup successful! Redirecting...');
       setOpen(true);
       setTimeout(() => navigate('/'), 1500);

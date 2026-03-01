@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, Card, CardContent, CardMedia, Button, Grid, Snackbar, IconButton, Chip, Box, Divider } from '@mui/material';
+import { Container, Button, Snackbar, IconButton, Chip, Divider } from '@mui/material';
 import { Delete, ShoppingCart, LocalShipping, Payment, Favorite, Star, LocationOn, AttachMoney } from '@mui/icons-material';
 
 function Cart() {

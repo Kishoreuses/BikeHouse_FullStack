@@ -83,7 +83,7 @@ function AdminDashboard() {
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [selectedBike, setSelectedBike] = useState(null);
     const [message, setMessage] = useState('');
-    const [activeTab, setActiveTab] = useState('overview');
+
 
     const fetchData = async () => {
         const token = localStorage.getItem('token');
