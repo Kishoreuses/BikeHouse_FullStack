@@ -172,7 +172,7 @@ function BikeMarketplace() {
             fetchBikes(); // Refresh list
             setAlert({ show: true, message: 'Bike booked successfully!', type: 'success' });
         } catch (error) {
-            setAlert({ show: true, message: error.response?.data || 'Failed to book bike', type: 'danger' });
+            setAlert({ show: true, message: error.response?.data?.message || error.response?.data || 'Failed to book bike', type: 'danger' });
         } finally {
             setBookingLoading(prev => ({ ...prev, [bikeId]: false }));
         }
