@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_URL from '../api/api';
 
 const carouselImages = [
   {
@@ -53,7 +54,7 @@ function Home() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:5000/api/bikes')
+    axios.get(`${API_URL}/api/bikes`)
       .then(res => setBikes(res.data))
       .finally(() => setLoading(false));
   }, []);
@@ -62,7 +63,7 @@ function Home() {
     e.preventDefault();
     setLoading(true);
     const params = new URLSearchParams({ ...search, minPrice: price[0], maxPrice: price[1] }).toString();
-    const res = await axios.get(`http://localhost:5000/api/bikes?${params}`);
+    const res = await axios.get(`${API_URL}/api/bikes?${params}`);
     setBikes(res.data);
     setLoading(false);
   };
@@ -205,7 +206,7 @@ function Home() {
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                 {bike.images && bike.images[0] && (
-                  <img src={`http://localhost:5000${bike.images[0]}`} alt={bike.model} className="card-img-top" style={{ height: 220, objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16 }} />
+                  <img src={`${API_URL}${bike.images[0]}`} alt={bike.model} className="card-img-top" style={{ height: 220, objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16 }} />
                 )}
                 <div className="card-body">
                   <h4 className="fw-bold mb-2" style={{ fontSize: 28 }}>{bike.brand} {bike.model}</h4>
@@ -316,7 +317,7 @@ function Home() {
                   onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
                   onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                   {bike.images && bike.images[0] && (
-                    <img src={`http://localhost:5000${bike.images[0]}`} alt={bike.model} className="card-img-top" style={{ height: 200, objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16 }} />
+                    <img src={`${API_URL}${bike.images[0]}`} alt={bike.model} className="card-img-top" style={{ height: 200, objectFit: 'cover', borderTopLeftRadius: 16, borderTopRightRadius: 16 }} />
                   )}
                   <div className="card-body">
                     <h4 className="fw-bold mb-2" style={{ fontSize: 24 }}>{bike.brand} {bike.model}</h4>

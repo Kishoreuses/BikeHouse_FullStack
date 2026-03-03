@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import API_URL from '../api/api';
 
 const brandOptions = [
   'Hero', 'Honda', 'Yamaha', 'Royal Enfield', 'Suzuki', 'Bajaj', 'TVS', 'KTM', 'Other'
@@ -104,7 +105,7 @@ function SaleBike() {
     rcFiles.forEach(file => data.append('rc', file));
     insuranceFiles.forEach(file => data.append('insurance', file));
     try {
-      await axios.post('http://localhost:5000/api/bikes', data, {
+      await axios.post(`${API_URL}/api/bikes`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

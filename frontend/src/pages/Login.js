@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import API_URL from '../api/api';
 
 const backgroundImage =
   'https://t4.ftcdn.net/jpg/08/63/30/05/360_F_863300589_NojEYK8ktAoHEbIQEpTv8VUFAlMR49xx.jpg';
@@ -33,7 +34,7 @@ function Login() {
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
     try {
-      const res = await axios.post('http://localhost:5000/api/users/login', form);
+      const res = await axios.post(`${API_URL}/api/users/login`, form);
       localStorage.setItem('token', res.data.token);
       if (res.data.user.role === 'admin') {
         navigate('/admin');

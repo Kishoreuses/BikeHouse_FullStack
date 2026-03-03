@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../api/api';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Badge from '@mui/material/Badge';
 
@@ -47,7 +48,7 @@ function BikeMarketplace() {
 
     const fetchUserProfile = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/users/profile', {
+            const response = await axios.get(`${API_URL}/api/users/profile`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUserProfile(response.data);
@@ -59,7 +60,7 @@ function BikeMarketplace() {
     const fetchBikes = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://localhost:5000/api/bikes');
+            const response = await axios.get(`${API_URL}/api/bikes`);
             let availableBikes = response.data.filter(bike => !bike.sold);
 
             setBikes(availableBikes);
@@ -113,7 +114,7 @@ function BikeMarketplace() {
 
     const fetchCartItems = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/users/cart', {
+            const response = await axios.get(`${API_URL}/api/users/cart`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setCartItems(response.data);
@@ -127,7 +128,7 @@ function BikeMarketplace() {
         }
         setCartLoading(prev => ({ ...prev, [bikeId]: true }));
         try {
-            await axios.post('http://localhost:5000/api/users/cart', { bikeId }, { headers: { Authorization: `Bearer ${token}` } });
+            await axios.post(`${API_URL}/api/users/cart`, { bikeId }, { headers: { Authorization: `Bearer ${token}` } });
             await fetchCartItems();
             setAlert({ show: true, message: 'Added to cart successfully!', type: 'success' });
         } catch (error) {
@@ -140,7 +141,7 @@ function BikeMarketplace() {
     const handleRemoveFromCart = async (bikeId) => {
         setCartLoading(prev => ({ ...prev, [bikeId]: true }));
         try {
-            await axios.delete('http://localhost:5000/api/users/cart', {
+            await axios.delete(`${API_URL}/api/users/cart`, {
                 headers: { Authorization: `Bearer ${token}` },
                 data: { bikeId }
             });
@@ -165,7 +166,7 @@ function BikeMarketplace() {
         }
         setBookingLoading(prev => ({ ...prev, [bikeId]: true }));
         try {
-            await axios.post(`http://localhost:5000/api/bikes/${bikeId}/book`, {}, {
+            await axios.post(`${API_URL}/api/bikes/${bikeId}/book`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchBikes(); // Refresh list
@@ -223,7 +224,7 @@ function BikeMarketplace() {
     const BikeCard = ({ bike }) => (
         <div className="card h-100 shadow animate__animated animate__fadeInUp" style={{ cursor: 'pointer', position: 'relative' }} onClick={() => handleBikeClick(bike)}>
             <img
-                src={bike.images && bike.images[0] ? `http://localhost:5000${bike.images[0]}` : 'https://via.placeholder.com/300x200?text=No+Image'}
+                src={bike.images && bike.images[0] ? `${API_URL}${bike.images[0]}` : 'https://via.placeholder.com/300x200?text=No+Image'}
                 className="card-img-top"
                 alt={bike.model}
                 style={{ height: 200, objectFit: 'cover' }}
@@ -283,7 +284,7 @@ function BikeMarketplace() {
     // Download PDF handler
     const handleDownloadPDF = async (bikeId) => {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/bikes/${bikeId}/pdf`, {
+        const response = await fetch(`${API_URL}/api/bikes/${bikeId}/pdf`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         const blob = await response.blob();
@@ -310,7 +311,7 @@ function BikeMarketplace() {
                         <div className="row g-4">
                             <div className="col-md-6">
                                 <img
-                                    src={selectedBike?.images && selectedBike?.images[0] ? `http://localhost:5000${selectedBike.images[0]}` : 'https://via.placeholder.com/400x300?text=No+Image'}
+                                    src={selectedBike?.images && selectedBike?.images[0] ? `${API_URL}${selectedBike.images[0]}` : 'https://via.placeholder.com/400x300?text=No+Image'}
                                     alt={selectedBike?.model}
                                     className="img-fluid rounded mb-2"
                                     style={{ height: 300, objectFit: 'cover', width: '100%' }}
@@ -320,7 +321,7 @@ function BikeMarketplace() {
                                         {selectedBike.images.slice(1, 5).map((image, index) => (
                                             <img
                                                 key={index}
-                                                src={`http://localhost:5000${image}`}
+                                                src={`${API_URL}${image}`}
                                                 alt={`${selectedBike.model} ${index + 2}`}
                                                 style={{ width: 80, height: 60, objectFit: 'cover', borderRadius: 4 }}
                                             />

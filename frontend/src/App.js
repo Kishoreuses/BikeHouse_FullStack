@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import BikeDetails from './pages/BikeDetails';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_URL from './api/api';
 
 function SalesDetails() {
   const token = localStorage.getItem('token');
@@ -25,7 +26,7 @@ function SalesDetails() {
   useEffect(() => {
     if (!isAdmin) return;
     setLoading(true);
-    axios.get('http://localhost:5000/api/admin/bikes', { headers: { Authorization: `Bearer ${token}` } })
+    axios.get(`${API_URL}/api/admin/bikes`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => {
         setSales(res.data.filter(b => b.sold));
       })
@@ -95,7 +96,7 @@ function UserDetails() {
   useEffect(() => {
     if (!isAdmin) return;
     setLoading(true);
-    axios.get('http://localhost:5000/api/admin/users', { headers: { Authorization: `Bearer ${token}` } })
+    axios.get(`${API_URL}/api/admin/users`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setUsers(res.data))
       .finally(() => setLoading(false));
   }, [token, isAdmin]);
@@ -104,7 +105,7 @@ function UserDetails() {
     if (!window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) return;
     setDeleting(userId);
     try {
-      await axios.delete(`http://localhost:5000/api/users/${userId}`, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.delete(`${API_URL}/api/users/${userId}`, { headers: { Authorization: `Bearer ${token}` } });
       setUsers(users.filter(u => u._id !== userId));
       setMessage('User deleted successfully.');
     } catch (err) {

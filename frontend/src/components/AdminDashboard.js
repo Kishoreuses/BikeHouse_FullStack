@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_URL from '../api/api';
 import {
     Container,
     Typography,
@@ -71,10 +72,10 @@ function AdminDashboard() {
         const token = localStorage.getItem('token');
         setLoading(true);
         Promise.all([
-            axios.get('http://localhost:5000/api/admin/stats', { headers: { Authorization: `Bearer ${token}` } }),
-            axios.get('http://localhost:5000/api/admin/users', { headers: { Authorization: `Bearer ${token}` } }),
-            axios.get('http://localhost:5000/api/admin/bikes', { headers: { Authorization: `Bearer ${token}` } }),
-            axios.get('http://localhost:5000/api/admin/sales-report', { headers: { Authorization: `Bearer ${token}` } })
+            axios.get(`${API_URL}/api/admin/stats`, { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`${API_URL}/api/admin/users`, { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`${API_URL}/api/admin/bikes`, { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`${API_URL}/api/admin/sales-report`, { headers: { Authorization: `Bearer ${token}` } })
         ]).then(([statsRes, usersRes, bikesRes, salesRes]) => {
             setStats(statsRes.data);
             setUsers(usersRes.data);
@@ -96,7 +97,7 @@ function AdminDashboard() {
         if (!selectedBike) return;
         const token = localStorage.getItem('token');
         try {
-            await axios.patch(`http://localhost:5000/api/bikes/${selectedBike._id}/sold`, {}, {
+            await axios.patch(`${API_URL}/api/bikes/${selectedBike._id}/sold`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setMessage('Bike marked as sold!');

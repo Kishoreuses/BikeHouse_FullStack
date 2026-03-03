@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../api/api';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Navbar() {
       if (token && isMounted) {
         try {
           setLoading(true);
-          const response = await axios.get('http://localhost:5000/api/users/profile', {
+          const response = await axios.get(`${API_URL}/api/users/profile`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           if (isMounted) {
@@ -89,7 +90,7 @@ function Navbar() {
   const testImageUrl = async (imagePath) => {
     if (!imagePath) return false;
     try {
-      const response = await fetch(`http://localhost:5000${imagePath}`);
+      const response = await fetch(`${API_URL}${imagePath}`);
       return response.ok;
     } catch (error) {
       console.error('Image test failed:', error);
@@ -227,7 +228,7 @@ function Navbar() {
                         {console.log('Rendering profile image:', userProfile.profileImage)}
                         {console.log('Full image URL:', `http://localhost:5000${userProfile.profileImage}`)}
                         <img
-                          src={`http://localhost:5000${userProfile.profileImage}?t=${Date.now()}`}
+                          src={`${API_URL}${userProfile.profileImage}?t=${Date.now()}`}
                           alt="Profile"
                           style={{
                             width: '100%',

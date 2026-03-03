@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import API_URL from '../api/api';
 
 const backgroundImage =
   'https://t4.ftcdn.net/jpg/08/63/30/05/360_F_863300589_NojEYK8ktAoHEbIQEpTv8VUFAlMR49xx.jpg';
@@ -47,7 +48,7 @@ function Signup() {
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
     try {
-      await axios.post('http://localhost:5000/api/users/signup', form);
+      await axios.post(`${API_URL}/api/users/signup`, form);
       setMessage('Signup successful! Redirecting...');
       setOpen(true);
       setTimeout(() => navigate('/'), 1500);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import API_URL from '../api/api';
 
 function BikeDetails() {
   const { id } = useParams();
@@ -16,12 +17,12 @@ function BikeDetails() {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/bikes/${id}`).then(res => setBike(res.data));
+    axios.get(`${API_URL}/api/bikes/${id}`).then(res => setBike(res.data));
   }, [id]);
 
   const handleMarkAsSold = async () => {
     try {
-      const res = await axios.patch(`http://localhost:5000/api/bikes/${id}/sold`, {}, {
+      const res = await axios.patch(`${API_URL}/api/bikes/${id}/sold`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBike(res.data);
@@ -46,7 +47,7 @@ function BikeDetails() {
         <div className="col-lg-8">
           <div className="card shadow-lg p-4 mb-4 rounded-4">
             {bike.images && bike.images[0] && (
-              <img src={bike.images[0]} alt={bike.model} className="card-img-top mb-3 rounded-4" style={{ height: 240, objectFit: 'cover' }} />
+              <img src={`${API_URL}${bike.images[0]}`} alt={bike.model} className="card-img-top mb-3 rounded-4" style={{ height: 240, objectFit: 'cover' }} />
             )}
             <div className="card-body">
               <h2 className="fw-bold text-primary mb-2" style={{ fontSize: '2rem' }}>{bike.model}</h2>

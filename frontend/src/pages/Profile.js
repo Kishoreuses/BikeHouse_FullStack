@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-
-const API = 'http://localhost:5000';
+import API_URL from '../api/api';
 
 const tabStyle = (active) => ({
     padding: '10px 22px',
@@ -29,7 +28,7 @@ function Profile() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        axios.get(`${API}/api/users/profile`, { headers: { Authorization: `Bearer ${token}` } })
+        axios.get(`${API_URL}/api/users/profile`, { headers: { Authorization: `Bearer ${token}` } })
             .then(res => {
                 const { username, email, phone, location } = res.data;
                 setProfile({ username: username || '', email: email || '', phone: phone || '', location: location || '' });
@@ -47,7 +46,7 @@ function Profile() {
         e.preventDefault();
         setSaving(true); setMessage(''); setError('');
         try {
-            await axios.put(`${API}/api/users/profile`, profile, { headers: { Authorization: `Bearer ${token}` } });
+            await axios.put(`${API_URL}/api/users/profile`, profile, { headers: { Authorization: `Bearer ${token}` } });
             setMessage('Profile updated successfully!');
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to update profile.');
@@ -69,7 +68,7 @@ function Profile() {
     const fetchMyBikes = useCallback(() => {
         if (!user?.id) return;
         setBikesLoading(true); setBikesError('');
-        axios.get(`${API}/api/bikes?owner=${user.id}`, { headers: { Authorization: `Bearer ${token}` } })
+        axios.get(`${API_URL}/api/bikes?owner=${user.id}`, { headers: { Authorization: `Bearer ${token}` } })
             .then(res => setMyBikes(res.data))
             .catch(() => setBikesError('Failed to load your bikes.'))
             .finally(() => setBikesLoading(false));
@@ -82,7 +81,7 @@ function Profile() {
     const handleDelete = async (bikeId) => {
         if (!window.confirm('Are you sure you want to delete this bike?')) return;
         try {
-            await axios.delete(`${API}/api/bikes/${bikeId}`, { headers: { Authorization: `Bearer ${token}` } });
+            await axios.delete(`${API_URL}/api/bikes/${bikeId}`, { headers: { Authorization: `Bearer ${token}` } });
             setBikeMsg('Bike deleted successfully.');
             setMyBikes(prev => prev.filter(b => b._id !== bikeId));
         } catch { setBikesError('Failed to delete bike.'); }
@@ -91,7 +90,7 @@ function Profile() {
     const handleToggleSold = async (bike) => {
         const endpoint = bike.sold ? 'available' : 'sold';
         try {
-            const res = await axios.patch(`${API}/api/bikes/${bike._id}/${endpoint}`, {}, { headers: { Authorization: `Bearer ${token}` } });
+            const res = await axios.patch(`${API_URL}/api/bikes/${bike._id}/${endpoint}`, {}, { headers: { Authorization: `Bearer ${token}` } });
             setMyBikes(prev => prev.map(b => b._id === bike._id ? res.data : b));
             setBikeMsg(`Bike marked as ${bike.sold ? 'Available' : 'Sold'}.`);
         } catch { setBikesError('Failed to update status.'); }
@@ -113,7 +112,7 @@ function Profile() {
         e.preventDefault();
         setEditSaving(true); setEditMsg('');
         try {
-            const res = await axios.put(`${API}/api/bikes/${editBike._id}`, editForm, { headers: { Authorization: `Bearer ${token}` } });
+            const res = await axios.put(`${API_URL}/api/bikes/${editBike._id}`, editForm, { headers: { Authorization: `Bearer ${token}` } });
             setMyBikes(prev => prev.map(b => b._id === editBike._id ? res.data : b));
             setEditMsg('Bike updated!');
             setTimeout(() => setEditBike(null), 1000);
@@ -126,7 +125,7 @@ function Profile() {
     const handleRemoveBuyer = async (bikeId, buyerId) => {
         if (!window.confirm('Remove this buyer from the list?')) return;
         try {
-            const res = await axios.delete(`${API}/api/bikes/${bikeId}/book/${buyerId}`, { headers: { Authorization: `Bearer ${token}` } });
+            const res = await axios.delete(`${API_URL}/api/bikes/${bikeId}/book/${buyerId}`, { headers: { Authorization: `Bearer ${token}` } });
             setMyBikes(prev => prev.map(b => b._id === bikeId ? res.data : b));
         } catch { setBikesError('Failed to remove buyer.'); }
     };
@@ -233,7 +232,7 @@ function Profile() {
                                                 {/* Bike Image */}
                                                 {bike.images && bike.images.length > 0 ? (
                                                     <img
-                                                        src={`${API}${bike.images[0]}`}
+                                                        src={`${API_URL}${bike.images[0]}`}
                                                         alt={bike.model}
                                                         style={{ width: 120, height: 90, objectFit: 'cover', borderRadius: 8, flexShrink: 0 }}
                                                     />
