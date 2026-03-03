@@ -121,23 +121,23 @@ function Navbar() {
     >
       <div className="container-fluid">
         <Link
-          className="navbar-brand d-flex align-items-center fw-bold fs-2"
+          className="navbar-brand d-flex align-items-center fw-bold fs-4 fs-md-2"
           to={isAdmin ? "/admin" : "/"}
           style={{
             fontFamily: 'Poppins, Roboto, Arial, sans-serif',
-            letterSpacing: 2,
+            letterSpacing: 1,
             color: '#fff',
             fontWeight: 900,
-            fontSize: '2.2rem',
-            textShadow: '1px 2px 8px rgba(25, 118, 210, 0.2)'
+            textShadow: '1px 2px 8px rgba(0,0,0,0.2)'
           }}
         >
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPaKlSW5mpdJ1VdekmO9xedXM_TmkuO6tbwGeilzMzShKE6T_6sp7MtY6gUcNelgHWHxQ&usqp=CAU"
             alt="BikeHouse Logo"
-            style={{ width: 80, height: 80, marginRight: 10, borderRadius: 8, boxShadow: '0 2px 8px rgba(25, 118, 210, 0.15)' }}
+            className="navbar-logo-img"
+            style={{ width: 'clamp(40px, 8vw, 60px)', height: 'auto', marginRight: 10, borderRadius: 8 }}
           />
-          BIKEHOUSE
+          <span className="d-none d-sm-inline">BIKEHOUSE</span>
         </Link>
         <button
           className="navbar-toggler"
@@ -156,22 +156,22 @@ function Navbar() {
               <>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/admin">
-                    <h4 className="mb-0 fw-bold">Dashboard</h4>
+                    <span className="fw-bold">Dashboard</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/sales">
-                    <h4 className="mb-0 fw-bold">Sales</h4>
+                    <span className="fw-bold">Sales</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/users">
-                    <h4 className="mb-0 fw-bold">User Details</h4>
+                    <span className="fw-bold">User Details</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/about">
-                    <h4 className="mb-0 fw-bold">About</h4>
+                    <span className="fw-bold">About</span>
                   </Link>
                 </li>
               </>
@@ -179,27 +179,27 @@ function Navbar() {
               <>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/">
-                    <h4 className="mb-0 fw-bold">Home</h4>
+                    <span className="fw-bold">Home</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/marketplace">
-                    <h4 className="mb-0 fw-bold">Buy Bikes</h4>
+                    <span className="fw-bold">Buy Bikes</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/sale">
-                    <h4 className="mb-0 fw-bold">Sell Bike</h4>
+                    <span className="fw-bold">Sell Bike</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/cart">
-                    <h4 className="mb-0 fw-bold">Cart</h4>
+                    <span className="fw-bold">Cart</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-custom px-3" to="/about">
-                    <h4 className="mb-0 fw-bold">About</h4>
+                    <span className="fw-bold">About</span>
                   </Link>
                 </li>
               </>
@@ -212,11 +212,11 @@ function Navbar() {
                   <div
                     className="rounded-circle bg-white text-primary fw-bold d-flex justify-content-center align-items-center shadow-sm overflow-hidden"
                     style={{
-                      width: 44,
-                      height: 44,
+                      width: 40,
+                      height: 40,
                       cursor: 'pointer',
-                      fontSize: 22,
-                      border: '2px solid #1976d2',
+                      fontSize: 18,
+                      border: '2px solid #fff',
                       fontFamily: 'Poppins, Roboto, Arial, sans-serif',
                       position: 'relative'
                     }}
@@ -260,43 +260,43 @@ function Navbar() {
                         display: userProfile && userProfile.profileImage ? 'none' : 'flex',
                         backgroundColor: '#fff',
                         color: '#1976d2',
-                        fontSize: '22px',
+                        fontSize: '18px',
                         fontWeight: 'bold'
                       }}
                     >
                       {(profileName && profileName.charAt(0).toUpperCase()) || 'U'}
                     </div>
                   </div>
-                  <div className="d-flex flex-column align-items-start justify-content-center" style={{ minWidth: 90 }}>
+                  <div className="d-flex flex-column align-items-start justify-content-center d-none d-md-flex" style={{ minWidth: 90 }}>
                     {loading ? (
-                      <span className="fw-bold text-white fs-5" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
+                      <span className="fw-bold text-white fs-6" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
                         Loading...
                       </span>
                     ) : (
                       <>
-                        <span className="fw-bold text-white fs-5" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
+                        <span className="fw-bold text-white fs-6" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
                           {profileName || 'User'}
                         </span>
                         {originalUsername && originalUsername !== profileName && (
-                          <span className="text-white-50 small" style={{ fontSize: 14, marginTop: -4 }}>
+                          <span className="text-white-50 small" style={{ fontSize: 12, marginTop: -4 }}>
                             @{originalUsername}
                           </span>
                         )}
                       </>
                     )}
                   </div>
-                  <button className="btn btn-outline-light px-3 ms-2" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} onClick={handleLogout}>
-                    <h4 className="mb-0 fw-bold">Logout</h4>
+                  <button className="btn btn-outline-light btn-sm px-3 ms-md-2" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} onClick={handleLogout}>
+                    <span className="mb-0 fw-bold">Logout</span>
                   </button>
                 </div>
               </>
             ) : (
               <>
-                <Link className="btn btn-outline-light px-3 me-2" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} to="/login">
-                  <h4 className="mb-0 fw-bold">Login</h4>
+                <Link className="btn btn-outline-light btn-sm px-3 me-2" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} to="/login">
+                  <span className="mb-0 fw-bold">Login</span>
                 </Link>
-                <Link className="btn btn-warning px-3" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} to="/signup">
-                  <h4 className="mb-0 fw-bold">Signup</h4>
+                <Link className="btn btn-warning btn-sm px-3" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} to="/signup">
+                  <span className="mb-0 fw-bold">Signup</span>
                 </Link>
               </>
             )}

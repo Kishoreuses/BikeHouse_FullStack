@@ -207,7 +207,7 @@ function BikeMarketplace() {
                         <input type="number" className="form-control" min="0" max="1000000" value={priceRange[1]} onChange={e => setPriceRange([priceRange[0], +e.target.value])} />
                     </div>
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-md-3">
                     <label className="form-label">Sort By</label>
                     <select className="form-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
                         <option value="newest">Newest First</option>
@@ -301,7 +301,7 @@ function BikeMarketplace() {
     // Bike Details Modal
     const BikeDetailsModal = () => (
         <div className={`modal fade ${modalOpen ? 'show d-block' : ''}`} tabIndex="-1" style={{ background: 'rgba(0,0,0,0.5)' }}>
-            <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-dialog modal-xl modal-dialog-centered">
                 <div className="modal-content animate__animated animate__fadeInDown">
                     <div className="modal-header">
                         <h4 className="modal-title fw-bold">{selectedBike?.brand} {selectedBike?.model}</h4>
@@ -420,8 +420,8 @@ function BikeMarketplace() {
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
                     />
-                    <button className="btn btn-outline-primary" onClick={() => setFilterOpen(!filterOpen)}>
-                        <i className="bi bi-funnel"></i> Filters
+                    <button className="btn btn-outline-primary btn-sm btn-md-lg" onClick={() => setFilterOpen(!filterOpen)}>
+                        <i className="bi bi-funnel"></i> <span className="d-none d-md-inline">Filters</span>
                     </button>
                 </div>
             </div>
@@ -442,7 +442,7 @@ function BikeMarketplace() {
             ) : (
                 <>
                     {/* Bikes Grid */}
-                    <div className="row g-4">
+                    <div className="row g-3 g-md-4">
                         {filteredBikes.map(bike => (
                             <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={bike._id}>
                                 <BikeCard bike={bike} />

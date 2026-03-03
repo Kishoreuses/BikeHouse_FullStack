@@ -73,17 +73,17 @@ function Home() {
   return (
     <div className="bg-light" style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
       {/* Hero Section */}
-      <div className="container-fluid py-5 animate__animated animate__fadeIn">
-        <div className="row justify-content-center align-items-center mb-5">
+      <div className="container-fluid py-4 py-md-5 animate__animated animate__fadeIn">
+        <div className="row justify-content-center align-items-center mb-4 mb-md-5">
           <div className="col-lg-10">
-            <div className="position-relative rounded-4 overflow-hidden shadow-lg" style={{ height: 420, background: '#1a1a1a' }}>
+            <div className="position-relative rounded-4 overflow-hidden shadow-lg" style={{ minHeight: '300px', height: '50vh', background: '#1a1a1a' }}>
               <div id="homeCarousel" className="carousel slide h-100" data-bs-ride="carousel">
                 <div className="carousel-inner h-100">
                   {carouselImages.map((item, idx) => (
                     <div className={`carousel-item h-100${idx === 0 ? ' active' : ''}`} key={idx}>
                       <img src={item.src} className="d-block w-100 h-100" alt={item.caption} style={{ objectFit: 'cover', filter: 'brightness(0.6)' }} />
-                      <div className="carousel-caption d-flex flex-column justify-content-center align-items-center h-100">
-                        <h1 className="display-2 fw-bold text-white text-shadow mb-3" style={{ letterSpacing: 2, fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>{item.caption}</h1>
+                      <div className="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 px-3">
+                        <h1 className="display-4 fw-bold text-white text-shadow mb-3" style={{ letterSpacing: 2, fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>{item.caption}</h1>
                       </div>
                     </div>
                   ))}
@@ -98,8 +98,8 @@ function Home() {
                 </button>
               </div>
               <button
-                className="btn btn-warning btn-lg position-absolute bottom-0 start-50 translate-middle-x mb-4 px-5 py-3 fw-bold shadow-lg"
-                style={{ fontSize: 28, borderRadius: 16, fontFamily: 'Poppins, Roboto, Arial, sans-serif', background: 'linear-gradient(45deg, #ff6b35, #f7931e)' }}
+                className="btn btn-warning btn-lg position-absolute bottom-0 start-50 translate-middle-x mb-2 mb-md-4 px-3 px-md-5 py-2 py-md-3 fw-bold shadow-lg"
+                style={{ fontSize: '1.25rem', borderRadius: 16, fontFamily: 'Poppins, Roboto, Arial, sans-serif', background: 'linear-gradient(45deg, #ff6b35, #f7931e)' }}
                 onClick={() => window.location.href = '/sale'}
               >
                 <i className="bi bi-bicycle me-2"></i>
@@ -111,26 +111,26 @@ function Home() {
       </div>
 
       {/* About Section - Full Width */}
-      <div className="container-fluid mb-5">
-        <div className="card shadow-lg p-5 mb-4 rounded-4" style={{ margin: '0 20px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
-          <h2 className="fw-bold display-5 mb-3 text-center" style={{ letterSpacing: 2, fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
+      <div className="container-fluid mb-4 mb-md-5">
+        <div className="card shadow-lg p-3 p-md-5 mb-4 rounded-4 mx-2 mx-md-4" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+          <h2 className="fw-bold display-6 mb-3 text-center" style={{ letterSpacing: 2, fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
             <i className="bi bi-info-circle me-3"></i>
             About BikeHouse
           </h2>
-          <hr className="mb-4" style={{ borderTop: '2px solid #fff', width: '60%', margin: '0 auto' }} />
-          <h4 className="fw-semibold mb-2 text-center">BikeHouse is India's most trusted platform for buying and selling bikes. We connect passionate riders and sellers, offering a seamless, secure, and transparent experience. Whether you're looking for your first bike or upgrading to your dream ride, BikeHouse is your one-stop destination.</h4>
+          <hr className="mb-4 d-none d-md-block" style={{ borderTop: '2px solid #fff', width: '60%', margin: '0 auto' }} />
+          <h4 className="fw-semibold mb-2 text-center fs-5 fs-md-4">BikeHouse is India's most trusted platform for buying and selling bikes. We connect passionate riders and sellers, offering a seamless, secure, and transparent experience.</h4>
           <div className="row mt-4 text-center">
-            <div className="col-md-4">
-              <i className="bi bi-graph-up-arrow text-warning" style={{ fontSize: '3rem' }}></i>
-              <h5 className="fw-bold fs-3 mt-2">100K+ Bikes Sold</h5>
+            <div className="col-12 col-md-4 mb-3 mb-md-0">
+              <i className="bi bi-graph-up-arrow text-warning" style={{ fontSize: '2rem' }}></i>
+              <h5 className="fw-bold fs-4 mt-2">100K+ Bikes Sold</h5>
             </div>
-            <div className="col-md-4">
-              <i className="bi bi-people-fill text-warning" style={{ fontSize: '3rem' }}></i>
-              <h5 className="fw-bold fs-3 mt-2">50K+ Happy Users</h5>
+            <div className="col-12 col-md-4 mb-3 mb-md-0">
+              <i className="bi bi-people-fill text-warning" style={{ fontSize: '2rem' }}></i>
+              <h5 className="fw-bold fs-4 mt-2">50K+ Happy Users</h5>
             </div>
-            <div className="col-md-4">
-              <i className="bi bi-shield-check text-warning" style={{ fontSize: '3rem' }}></i>
-              <h5 className="fw-bold fs-3 mt-2">Verified Dealers</h5>
+            <div className="col-12 col-md-4">
+              <i className="bi bi-shield-check text-warning" style={{ fontSize: '2rem' }}></i>
+              <h5 className="fw-bold fs-4 mt-2">Verified Dealers</h5>
             </div>
           </div>
         </div>
@@ -143,49 +143,51 @@ function Home() {
             <i className="bi bi-search me-2"></i>
             Find Your Perfect Bike
           </h3>
-          <form className="row g-3 align-items-end" onSubmit={handleSearch}>
-            <div className="col-md-4">
+          <form className="row g-3" onSubmit={handleSearch}>
+            <div className="col-12 col-md-4">
               <label className="form-label fs-5">
                 <i className="bi bi-geo-alt me-2"></i>
                 Location
               </label>
               <input
                 type="text"
-                className="form-control form-control-lg"
+                className="form-control"
                 name="location"
                 value={search.location}
                 onChange={e => setSearch({ ...search, location: e.target.value })}
                 placeholder="Enter location"
               />
             </div>
-            <div className="col-md-4">
+            <div className="col-12 col-md-4">
               <label className="form-label fs-5">
                 <i className="bi bi-bicycle me-2"></i>
                 Model
               </label>
               <input
                 type="text"
-                className="form-control form-control-lg"
+                className="form-control"
                 name="model"
                 value={search.model}
                 onChange={e => setSearch({ ...search, model: e.target.value })}
                 placeholder="Enter model"
               />
             </div>
-            <div className="col-md-3">
+            <div className="col-12 col-md-3">
               <label className="form-label fs-5">
                 <i className="bi bi-currency-rupee me-2"></i>
                 Price Range
               </label>
               <div className="d-flex align-items-center gap-2">
-                <input type="number" className="form-control" min="0" max="100000" value={price[0]} onChange={e => setPrice([+e.target.value, price[1]])} />
-                <span className="mx-2">to</span>
-                <input type="number" className="form-control" min="0" max="100000" value={price[1]} onChange={e => setPrice([price[0], +e.target.value])} />
+                <input type="number" className="form-control form-control-sm" min="0" max="100000" value={price[0]} onChange={e => setPrice([+e.target.value, price[1]])} />
+                <span className="mx-1">to</span>
+                <input type="number" className="form-control form-control-sm" min="0" max="100000" value={price[1]} onChange={e => setPrice([price[0], +e.target.value])} />
               </div>
             </div>
-            <div className="col-md-1 d-grid">
-              <button type="submit" className="btn btn-primary btn-lg fw-bold mt-2" style={{ background: 'linear-gradient(45deg, #667eea, #764ba2)' }}>
-                <i className="bi bi-search"></i>
+            <div className="col-12 col-md-1 d-grid">
+              <button type="submit" className="btn btn-primary d-flex align-items-center justify-content-center" style={{ background: 'linear-gradient(45deg, #667eea, #764ba2)', height: '100%' }}>
+                <i className="bi bi-search me-2 d-md-none"></i>
+                <span className="d-md-none">Search</span>
+                <i className="bi bi-search d-none d-md-block"></i>
               </button>
             </div>
           </form>
@@ -198,9 +200,9 @@ function Home() {
           <i className="bi bi-star-fill text-warning me-3"></i>
           Featured Bikes
         </h2>
-        <div className="row g-4 justify-content-center">
+        <div className="row g-3 g-md-4 justify-content-center">
           {featuredBikes.map(bike => (
-            <div className="col-12 col-md-4" key={bike._id}>
+            <div className="col-12 col-sm-6 col-md-4" key={bike._id}>
               <div className="card h-100 shadow-lg rounded-4" style={{ cursor: 'pointer', transition: 'transform 0.3s ease', background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)', color: 'white' }}
                 onClick={() => window.location.href = `/bike/${bike._id}`}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
@@ -309,9 +311,9 @@ function Home() {
             </div>
           </div>
         ) : (
-          <div className="row g-4 justify-content-center">
+          <div className="row g-3 g-md-4 justify-content-center">
             {bikes.map(bike => (
-              <div className="col-12 col-md-4" key={bike._id}>
+              <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={bike._id}>
                 <div className="card h-100 shadow-lg rounded-4" style={{ cursor: 'pointer', transition: 'transform 0.3s ease', background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)', color: 'white' }}
                   onClick={() => window.location.href = `/bike/${bike._id}`}
                   onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
@@ -355,27 +357,27 @@ function Home() {
       </div>
 
       {/* Platform Info Section */}
-      <div className="container mb-5">
-        <div className="card shadow-lg p-5 mb-4 rounded-4 text-center" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
-          <h2 className="fw-bold display-6 mb-3" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
+      <div className="container mb-5 px-3">
+        <div className="card shadow-lg p-4 p-md-5 mb-4 rounded-4 text-center" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+          <h2 className="fw-bold display-6 mb-4" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
             <i className="bi bi-question-circle me-3"></i>
             Why Choose BikeHouse?
           </h2>
           <div className="row g-4">
-            <div className="col-md-4">
-              <i className="bi bi-shield-check text-warning" style={{ fontSize: '4rem' }}></i>
+            <div className="col-12 col-md-4">
+              <i className="bi bi-shield-check text-warning" style={{ fontSize: '2.5rem' }}></i>
               <h5 className="fw-bold mt-2">Verified Sellers</h5>
               <p className="text-light">All sellers are verified for trust and safety.</p>
             </div>
-            <div className="col-md-4">
-              <i className="bi bi-currency-exchange text-warning" style={{ fontSize: '4rem' }}></i>
+            <div className="col-12 col-md-4">
+              <i className="bi bi-currency-exchange text-warning" style={{ fontSize: '2.5rem' }}></i>
               <h5 className="fw-bold mt-2">Best Prices</h5>
-              <p className="text-light">Get the best deals on new and used bikes.</p>
+              <p className="text-light">Get the best deals on bikes.</p>
             </div>
-            <div className="col-md-4">
-              <i className="bi bi-lightning text-warning" style={{ fontSize: '4rem' }}></i>
+            <div className="col-12 col-md-4">
+              <i className="bi bi-lightning text-warning" style={{ fontSize: '2.5rem' }}></i>
               <h5 className="fw-bold mt-2">Easy Process</h5>
-              <p className="text-light">Buy or sell your bike in just a few clicks.</p>
+              <p className="text-light">Buy or sell in clicks.</p>
             </div>
           </div>
         </div>
@@ -402,14 +404,14 @@ function Home() {
           <i className="bi bi-handshake me-3"></i>
           Our Partners
         </h2>
-        <div className="row g-4 justify-content-center align-items-center">
+        <div className="row g-3 g-md-4 justify-content-center align-items-center">
           {partners.map((p, idx) => (
             <div className="col-6 col-md-3" key={idx}>
-              <div className="card h-100 shadow-lg rounded-4 text-center p-3" style={{ transition: 'transform 0.3s ease', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)' }}
+              <div className="card h-100 shadow-sm rounded-4 text-center p-2 p-md-3" style={{ transition: 'transform 0.3s ease', background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(10px)' }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                <img src={p.logo} alt={p.name} style={{ height: 56, marginBottom: 12 }} />
-                <h5 className="fw-bold">{p.name}</h5>
+                <img src={p.logo} alt={p.name} style={{ height: 40, marginBottom: 8, objectFit: 'contain' }} />
+                <h6 className="fw-bold mb-0">{p.name}</h6>
               </div>
             </div>
           ))}

@@ -3,15 +3,16 @@ import axios from 'axios';
 import API_URL from '../api/api';
 
 const tabStyle = (active) => ({
-    padding: '10px 22px',
+    padding: '10px 15px',
     border: 'none',
     borderBottom: active ? '3px solid #0d6efd' : '3px solid transparent',
     background: 'none',
     fontWeight: active ? '700' : '500',
     color: active ? '#0d6efd' : '#555',
     cursor: 'pointer',
-    fontSize: 15,
+    fontSize: 'clamp(12px, 3.5vw, 15px)',
     transition: 'all 0.2s',
+    whiteSpace: 'nowrap'
 });
 
 function Profile() {
@@ -145,26 +146,26 @@ function Profile() {
 
             {/* Header Card */}
             <div className="card shadow-sm border-0 mb-4">
-                <div className="card-body d-flex align-items-center gap-4 p-4" style={{ background: 'linear-gradient(135deg,#0d6efd 0%,#6610f2 100%)', borderRadius: 12 }}>
+                <div className="card-body d-flex flex-column flex-md-row align-items-center gap-3 gap-md-4 p-3 p-md-4" style={{ background: 'linear-gradient(135deg,#0d6efd 0%,#6610f2 100%)', borderRadius: 12 }}>
                     <div
                         className="rounded-circle bg-white d-inline-flex align-items-center justify-content-center fw-bold"
-                        style={{ width: 80, height: 80, fontSize: 32, color: '#0d6efd', flexShrink: 0 }}
+                        style={{ width: 'clamp(60px, 15vw, 80px)', height: 'clamp(60px, 15vw, 80px)', fontSize: 'clamp(24px, 6vw, 32px)', color: '#0d6efd', flexShrink: 0 }}
                     >
                         {profile.username ? profile.username[0].toUpperCase() : '?'}
                     </div>
-                    <div className="text-white">
-                        <h3 className="fw-bold mb-1">{profile.username}</h3>
-                        <p className="mb-0 opacity-75">{profile.email}</p>
+                    <div className="text-white text-center text-md-start">
+                        <h3 className="fw-bold mb-1" style={{ fontSize: 'clamp(1.25rem, 5vw, 1.75rem)' }}>{profile.username}</h3>
+                        <p className="mb-0 opacity-75 small">{profile.email}</p>
                         <span className="badge bg-white text-primary mt-1">{user?.role === 'admin' ? 'Administrator' : 'Member'}</span>
                     </div>
                 </div>
 
                 {/* Tabs */}
-                <div className="d-flex border-bottom px-2">
+                <div className="d-flex border-bottom px-2 overflow-x-auto text-nowrap">
                     {[
-                        { key: 'profile', label: '👤 Profile Info' },
+                        { key: 'profile', label: '👤 Profile' },
                         { key: 'mybikes', label: '🏍️ My Bikes' },
-                        { key: 'customers', label: '📋 Customer Details' },
+                        { key: 'customers', label: '📋 Customers' },
                     ].map(t => (
                         <button key={t.key} style={tabStyle(activeTab === t.key)} onClick={() => { setActiveTab(t.key); setBikeMsg(''); setBikesError(''); }}>
                             {t.label}
@@ -234,10 +235,11 @@ function Profile() {
                                                     <img
                                                         src={`${API_URL}${bike.images[0]}`}
                                                         alt={bike.model}
-                                                        style={{ width: 120, height: 90, objectFit: 'cover', borderRadius: 8, flexShrink: 0 }}
+                                                        className="img-fluid"
+                                                        style={{ width: 'clamp(100px, 25vw, 150px)', height: 'clamp(75px, 20vw, 110px)', objectFit: 'cover', borderRadius: 8, flexShrink: 0 }}
                                                     />
                                                 ) : (
-                                                    <div style={{ width: 120, height: 90, background: '#f0f0f0', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, flexShrink: 0 }}>🏍️</div>
+                                                    <div style={{ width: 'clamp(100px, 25vw, 150px)', height: 'clamp(75px, 20vw, 110px)', background: '#f0f0f0', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'clamp(24px, 5vw, 32px)', flexShrink: 0 }}>🏍️</div>
                                                 )}
 
                                                 {/* Bike Info */}

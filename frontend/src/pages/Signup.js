@@ -63,7 +63,7 @@ function Signup() {
       <div
         style={{
           minHeight: '100vh',
-          width: '100vw',
+          width: '100%',
           position: 'fixed',
           top: 0,
           left: 0,
@@ -75,25 +75,23 @@ function Signup() {
         }}
       />
       <div className="container d-flex align-items-center justify-content-center min-vh-100 animate__animated animate__fadeIn">
-        <div className="card shadow-lg p-5 rounded-5 w-100" style={{ maxWidth: 600, background: 'linear-gradient(135deg, #e3f0ff 0%, #f8faff 100%)' }}>
+        <div className="card shadow-lg p-3 p-md-5 rounded-5 w-100 mx-2" style={{ maxWidth: 650, background: 'linear-gradient(135deg, #e3f0ff 0%, #f8faff 100%)' }}>
           <div className="text-center mb-4">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPaKlSW5mpdJ1VdekmO9xedXM_TmkuO6tbwGeilzMzShKE6T_6sp7MtY6gUcNelgHWHxQ&usqp=CAU"
               alt="BikeHouse Logo"
-              width={120}
-              height={90}
-              style={{ marginBottom: 16 }}
+              style={{ width: 'clamp(80px, 15vw, 120px)', height: 'auto', marginBottom: 16 }}
             />
-            <h2 className="fw-bold text-primary mb-1">Create Your Account</h2>
-            <h5 className="text-secondary mb-0">Join BikeHouse and start your journey!</h5>
+            <h2 className="fw-bold text-primary mb-1" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>Create Your Account</h2>
+            <h5 className="text-secondary mb-0" style={{ fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>Join BikeHouse and start your journey!</h5>
           </div>
           <form noValidate onSubmit={handleSubmit} className="needs-validation" autoComplete="off">
-            <div className="row g-3">
+            <div className="row g-2 g-md-3">
               <div className="col-md-6">
-                <label htmlFor="firstName" className="form-label fs-5">First Name</label>
+                <label htmlFor="firstName" className="form-label">First Name</label>
                 <input
                   type="text"
-                  className={`form-control form-control-lg ${errors.firstName ? 'is-invalid' : ''}`}
+                  className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
                   id="firstName"
                   name="firstName"
                   value={form.firstName}
@@ -103,10 +101,10 @@ function Signup() {
                 {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="lastName" className="form-label fs-5">Last Name</label>
+                <label htmlFor="lastName" className="form-label">Last Name</label>
                 <input
                   type="text"
-                  className={`form-control form-control-lg ${errors.lastName ? 'is-invalid' : ''}`}
+                  className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
                   id="lastName"
                   name="lastName"
                   value={form.lastName}
@@ -116,10 +114,10 @@ function Signup() {
                 {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="username" className="form-label fs-5">Username</label>
+                <label htmlFor="username" className="form-label">Username</label>
                 <input
                   type="text"
-                  className={`form-control form-control-lg ${errors.username ? 'is-invalid' : ''}`}
+                  className={`form-control ${errors.username ? 'is-invalid' : ''}`}
                   id="username"
                   name="username"
                   value={form.username}
@@ -129,10 +127,10 @@ function Signup() {
                 {errors.username && <div className="invalid-feedback">{errors.username}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="phone" className="form-label fs-5">Phone Number</label>
+                <label htmlFor="phone" className="form-label">Phone Number</label>
                 <input
                   type="tel"
-                  className={`form-control form-control-lg ${errors.phone ? 'is-invalid' : ''}`}
+                  className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
                   id="phone"
                   name="phone"
                   value={form.phone}
@@ -143,10 +141,10 @@ function Signup() {
                 {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="password" className="form-label fs-5">Password</label>
+                <label htmlFor="password" className="form-label">Password</label>
                 <input
                   type="password"
-                  className={`form-control form-control-lg ${errors.password ? 'is-invalid' : ''}`}
+                  className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                   id="password"
                   name="password"
                   value={form.password}
@@ -156,10 +154,10 @@ function Signup() {
                 {errors.password && <div className="invalid-feedback">{errors.password}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="location" className="form-label fs-5">Location</label>
+                <label htmlFor="location" className="form-label">Location</label>
                 <input
                   type="text"
-                  className={`form-control form-control-lg ${errors.location ? 'is-invalid' : ''}`}
+                  className={`form-control ${errors.location ? 'is-invalid' : ''}`}
                   id="location"
                   name="location"
                   value={form.location}
@@ -169,10 +167,10 @@ function Signup() {
                 {errors.location && <div className="invalid-feedback">{errors.location}</div>}
               </div>
               <div className="col-12">
-                <label htmlFor="address" className="form-label fs-5">Address</label>
+                <label htmlFor="address" className="form-label">Address</label>
                 <input
                   type="text"
-                  className={`form-control form-control-lg ${errors.address ? 'is-invalid' : ''}`}
+                  className={`form-control ${errors.address ? 'is-invalid' : ''}`}
                   id="address"
                   name="address"
                   value={form.address}

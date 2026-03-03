@@ -228,11 +228,11 @@ function AdminDashboard() {
                         >
                             <BikeIcon />
                         </Avatar>
-                        <Box>
-                            <Typography variant="h6" sx={{ fontWeight: 600, color: royalColors.text }}>
+                        <Box sx={{ minWidth: 0 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 600, color: royalColors.text, fontSize: { xs: '1rem', md: '1.25rem' } }}>
                                 {bike.brand} {bike.model}
                             </Typography>
-                            <Typography variant="body2" sx={{ color: royalColors.textSecondary }}>
+                            <Typography variant="body2" sx={{ color: royalColors.textSecondary, fontSize: { xs: '0.75rem', md: '0.875rem' } }}>
                                 Owner: {bike.owner?.username || 'Unknown'}
                             </Typography>
                         </Box>
@@ -298,12 +298,13 @@ function AdminDashboard() {
                         <Typography variant="h3" sx={{
                             fontWeight: 'bold',
                             color: 'white',
-                            textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                            textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                            fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' }
                         }}>
                             Royal Admin Dashboard
                         </Typography>
                     </Box>
-                    <Typography variant="h6" sx={{ color: 'rgba(255,255,255,0.9)' }}>
+                    <Typography variant="subtitle1" sx={{ color: 'rgba(255,255,255,0.9)', fontSize: { xs: '0.9rem', md: '1.25rem' } }}>
                         Manage your bike marketplace with royal precision
                     </Typography>
                 </Box>
@@ -337,9 +338,9 @@ function AdminDashboard() {
                             subtitle="Listed"
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={6} md={3}>
                         <StatsCard
-                            title="Growth Rate"
+                            title="Growth"
                             value="+12.5%"
                             icon={<TrendingUpIcon />}
                             color={royalColors.warning}
@@ -423,34 +424,37 @@ function AdminDashboard() {
                                     </Typography>
                                 </Box>
                                 <Divider sx={{ mb: 3 }} />
-                                <ResponsiveContainer width="100%" height={400}>
-                                    <BarChart data={salesData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                                        <XAxis
-                                            dataKey="month"
-                                            tick={{ fill: royalColors.textSecondary }}
-                                            axisLine={{ stroke: royalColors.textSecondary }}
-                                        />
-                                        <YAxis
-                                            allowDecimals={false}
-                                            tick={{ fill: royalColors.textSecondary }}
-                                            axisLine={{ stroke: royalColors.textSecondary }}
-                                        />
-                                        <Tooltip
-                                            contentStyle={{
-                                                backgroundColor: 'rgba(255,255,255,0.95)',
-                                                border: 'none',
-                                                borderRadius: 8,
-                                                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-                                            }}
-                                        />
-                                        <Bar
-                                            dataKey="sales"
-                                            fill={royalColors.success}
-                                            radius={[4, 4, 0, 0]}
-                                        />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                                <Box sx={{ height: { xs: 300, md: 400 }, width: '100%' }}>
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <BarChart data={salesData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                                            <XAxis
+                                                dataKey="month"
+                                                tick={{ fill: royalColors.textSecondary, fontSize: 10 }}
+                                                axisLine={{ stroke: royalColors.textSecondary }}
+                                            />
+                                            <YAxis
+                                                allowDecimals={false}
+                                                tick={{ fill: royalColors.textSecondary, fontSize: 10 }}
+                                                axisLine={{ stroke: royalColors.textSecondary }}
+                                            />
+                                            <Tooltip
+                                                contentStyle={{
+                                                    backgroundColor: 'rgba(255,255,255,0.95)',
+                                                    border: 'none',
+                                                    borderRadius: 8,
+                                                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                                                    fontSize: '12px'
+                                                }}
+                                            />
+                                            <Bar
+                                                dataKey="sales"
+                                                fill={royalColors.success}
+                                                radius={[4, 4, 0, 0]}
+                                            />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </Box>
                             </CardContent>
                         </Card>
                     </Grid>

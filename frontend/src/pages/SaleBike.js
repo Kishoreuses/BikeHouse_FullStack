@@ -134,7 +134,7 @@ function SaleBike() {
     <div
       style={{
         minHeight: '100vh',
-        width: '100vw',
+        width: '100%',
         background: `url('https://t3.ftcdn.net/jpg/12/57/98/50/360_F_1257985039_uWRawb8gzSHXshvOik689aEaJdj8FQfp.jpg`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -143,25 +143,25 @@ function SaleBike() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '40px 0',
+        padding: '20px 0',
       }}
     >
       <div className="container d-flex align-items-center justify-content-center" style={{ minHeight: '80vh' }}>
         <div
-          className="card shadow-lg p-5 rounded-5 w-100 animate__animated animate__fadeIn"
+          className="card shadow-lg p-3 p-md-5 rounded-5 w-100 mx-2 animate__animated animate__fadeIn"
           style={{
-            maxWidth: 650,
+            maxWidth: 750,
             background: 'rgba(255,255,255,0.95)',
             boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
             border: '1px solid rgba(255,255,255,0.18)',
             backdropFilter: 'blur(8px)',
           }}
         >
-          <h2 className="fw-bold text-primary mb-4 text-center">Sell Your Bike</h2>
+          <h2 className="fw-bold text-primary mb-4 text-center" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>Sell Your Bike</h2>
           <form noValidate onSubmit={handleSubmit} className="needs-validation" autoComplete="off">
             <div className="row g-3">
               <div className="col-md-6">
-                <label htmlFor="brand" className="form-label fs-5">Brand</label>
+                <label htmlFor="brand" className="form-label">Brand</label>
                 <select
                   className={`form-select form-select-lg ${errors.brand ? 'is-invalid' : ''}`}
                   id="brand"
@@ -178,7 +178,7 @@ function SaleBike() {
                 {errors.brand && <div className="invalid-feedback">{errors.brand}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="model" className="form-label fs-5">Model</label>
+                <label htmlFor="model" className="form-label">Model</label>
                 <input
                   type="text"
                   className={`form-control form-control-lg ${errors.model ? 'is-invalid' : ''}`}
@@ -191,7 +191,7 @@ function SaleBike() {
                 {errors.model && <div className="invalid-feedback">{errors.model}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="location" className="form-label fs-5">Location</label>
+                <label htmlFor="location" className="form-label">Location</label>
                 <input
                   type="text"
                   className={`form-control form-control-lg ${errors.location ? 'is-invalid' : ''}`}
@@ -204,7 +204,7 @@ function SaleBike() {
                 {errors.location && <div className="invalid-feedback">{errors.location}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="price" className="form-label fs-5">Price</label>
+                <label htmlFor="price" className="form-label">Price</label>
                 <input
                   type="number"
                   className={`form-control form-control-lg ${errors.price ? 'is-invalid' : ''}`}
@@ -218,7 +218,7 @@ function SaleBike() {
                 {errors.price && <div className="invalid-feedback">{errors.price}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="color" className="form-label fs-5">Color</label>
+                <label htmlFor="color" className="form-label">Color</label>
                 <input
                   type="text"
                   className={`form-control form-control-lg ${errors.color ? 'is-invalid' : ''}`}
@@ -231,7 +231,7 @@ function SaleBike() {
                 {errors.color && <div className="invalid-feedback">{errors.color}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="ownersCount" className="form-label fs-5">Number of Owners</label>
+                <label htmlFor="ownersCount" className="form-label">Number of Owners</label>
                 <input
                   type="number"
                   className={`form-control form-control-lg ${errors.ownersCount ? 'is-invalid' : ''}`}
@@ -245,7 +245,7 @@ function SaleBike() {
                 {errors.ownersCount && <div className="invalid-feedback">{errors.ownersCount}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="kilometresRun" className="form-label fs-5">Kilometres Run</label>
+                <label htmlFor="kilometresRun" className="form-label">Kilometres Run</label>
                 <input
                   type="number"
                   className={`form-control form-control-lg ${errors.kilometresRun ? 'is-invalid' : ''}`}
@@ -259,7 +259,7 @@ function SaleBike() {
                 {errors.kilometresRun && <div className="invalid-feedback">{errors.kilometresRun}</div>}
               </div>
               <div className="col-md-6">
-                <label htmlFor="modelYear" className="form-label fs-5">Model Year</label>
+                <label htmlFor="modelYear" className="form-label">Model Year</label>
                 <input
                   type="number"
                   className={`form-control form-control-lg ${errors.modelYear ? 'is-invalid' : ''}`}
@@ -273,7 +273,7 @@ function SaleBike() {
                 {errors.modelYear && <div className="invalid-feedback">{errors.modelYear}</div>}
               </div>
               <div className="col-12">
-                <label htmlFor="description" className="form-label fs-5">Description</label>
+                <label htmlFor="description" className="form-label">Description</label>
                 <textarea
                   className={`form-control form-control-lg ${errors.description ? 'is-invalid' : ''}`}
                   id="description"

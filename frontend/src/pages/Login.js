@@ -52,7 +52,7 @@ function Login() {
       <div
         style={{
           minHeight: '100vh',
-          width: '100vw',
+          width: '100%',
           position: 'fixed',
           top: 0,
           left: 0,
@@ -64,24 +64,22 @@ function Login() {
         }}
       />
       <div className="container d-flex align-items-center justify-content-center min-vh-100 animate__animated animate__fadeIn">
-        <div className="card shadow-lg p-5 rounded-5 w-100" style={{ maxWidth: 520, background: 'linear-gradient(135deg, #e3f0ff 0%, #f8faff 100%)' }}>
+        <div className="card shadow-lg p-3 p-md-5 rounded-5 w-100 mx-2" style={{ maxWidth: 500, background: 'linear-gradient(135deg, #e3f0ff 0%, #f8faff 100%)' }}>
           <div className="text-center mb-4">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPaKlSW5mpdJ1VdekmO9xedXM_TmkuO6tbwGeilzMzShKE6T_6sp7MtY6gUcNelgHWHxQ&usqp=CAU"
               alt="BikeHouse Logo"
-              width={120}
-              height={90}
-              style={{ marginBottom: 12 }}
+              style={{ width: 'clamp(80px, 15vw, 120px)', height: 'auto', marginBottom: 12 }}
             />
-            <h2 className="fw-bold text-primary mb-1">Welcome Back</h2>
-            <h5 className="text-secondary mb-0">Login to BikeHouse</h5>
+            <h2 className="fw-bold text-primary mb-1" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>Welcome Back</h2>
+            <h5 className="text-secondary mb-0" style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)' }}>Login to BikeHouse</h5>
           </div>
           <form noValidate onSubmit={handleSubmit} className="needs-validation" autoComplete="off">
             <div className="mb-3">
-              <label htmlFor="usernameOrEmail" className="form-label fs-5">Username or Email</label>
+              <label htmlFor="usernameOrEmail" className="form-label">Username or Email</label>
               <input
                 type="text"
-                className={`form-control form-control-lg ${errors.usernameOrEmail ? 'is-invalid' : ''}`}
+                className={`form-control ${errors.usernameOrEmail ? 'is-invalid' : ''}`}
                 id="usernameOrEmail"
                 name="usernameOrEmail"
                 value={form.usernameOrEmail}
@@ -92,10 +90,10 @@ function Login() {
               {errors.usernameOrEmail && <div className="invalid-feedback">{errors.usernameOrEmail}</div>}
             </div>
             <div className="mb-3">
-              <label htmlFor="password" className="form-label fs-5">Password</label>
+              <label htmlFor="password" className="form-label">Password</label>
               <input
                 type="password"
-                className={`form-control form-control-lg ${errors.password ? 'is-invalid' : ''}`}
+                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                 id="password"
                 name="password"
                 value={form.password}

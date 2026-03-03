@@ -81,14 +81,14 @@ function Cart() {
         }}>
             <Container maxWidth="lg">
                 {/* Royal Header */}
-                <div className="text-center mb-5">
-                    <div className="d-flex justify-content-center align-items-center mb-3">
-                        <ShoppingCart className="text-white me-3" style={{ fontSize: '3rem' }} />
-                        <h1 className="text-white fw-bold mb-0" style={{ fontSize: '3.5rem', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
+                <div className="text-center mb-4 mb-md-5">
+                    <div className="d-flex justify-content-center align-items-center mb-2 mb-md-3">
+                        <ShoppingCart className="text-white me-2 me-md-3" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }} />
+                        <h1 className="text-white fw-bold mb-0" style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}>
                             Royal Cart
                         </h1>
                     </div>
-                    <p className="text-white-50 fs-5 mb-0">Your premium collection awaits</p>
+                    <p className="text-white-50 fs-6 fs-md-5 mb-0">Your premium collection awaits</p>
                 </div>
 
                 {cart.length === 0 ? (
@@ -176,59 +176,44 @@ function Cart() {
                                                             </div>
                                                         </div>
                                                         <div className="col-md-8">
-                                                            <div className="card-body p-4">
-                                                                <div className="d-flex justify-content-between align-items-start mb-3">
+                                                            <div className="card-body p-3 p-md-4">
+                                                                <div className="d-flex justify-content-between align-items-start mb-2 mb-md-3">
                                                                     <div>
-                                                                        <h5 className="fw-bold text-dark mb-2">{bike.brand} {bike.model}</h5>
-                                                                        <div className="d-flex align-items-center mb-2">
-                                                                            <LocationOn className="text-muted me-1" fontSize="small" />
-                                                                            <span className="text-muted">{bike.location}</span>
-                                                                        </div>
-                                                                        <div className="d-flex align-items-center">
-                                                                            <Star className="text-warning me-1" fontSize="small" />
-                                                                            <span className="text-muted">Premium Quality</span>
+                                                                        <h5 className="fw-bold text-dark mb-1 mb-md-2 fs-6 fs-md-5">{bike.brand} {bike.model}</h5>
+                                                                        <div className="d-flex align-items-center mb-1">
+                                                                            <LocationOn className="text-muted me-1" style={{ fontSize: '0.9rem' }} />
+                                                                            <span className="text-muted small">{bike.location}</span>
                                                                         </div>
                                                                     </div>
                                                                     <IconButton
                                                                         onClick={() => removeFromCart(bike._id)}
                                                                         style={{
                                                                             background: 'linear-gradient(45deg, #ff6b6b, #ee5a52)',
-                                                                            color: 'white'
+                                                                            color: 'white',
+                                                                            padding: '6px'
                                                                         }}
                                                                         size="small"
                                                                     >
-                                                                        <Delete />
+                                                                        <Delete fontSize="small" />
                                                                     </IconButton>
                                                                 </div>
-
-                                                                <Divider className="my-3" />
-
                                                                 <div className="d-flex justify-content-between align-items-center">
-                                                                    <div>
-                                                                        <span className="text-muted fs-6">Price</span>
-                                                                        <div className="d-flex align-items-center">
-                                                                            <AttachMoney className="text-success me-1" />
-                                                                            <span className="fw-bold fs-4 text-success">₹{bike.price?.toLocaleString()}</span>
-                                                                        </div>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <span className="fw-bold fs-5 text-success">₹{bike.price?.toLocaleString()}</span>
                                                                     </div>
-                                                                    <div className="text-end">
-                                                                        <Button
-                                                                            variant="outlined"
-                                                                            size="small"
-                                                                            style={{
-                                                                                borderColor: '#667eea',
-                                                                                color: '#667eea',
-                                                                                borderRadius: '20px'
-                                                                            }}
-                                                                        >
-                                                                            View Details
-                                                                        </Button>
-                                                                    </div>
+                                                                    <Button
+                                                                        variant="outlined"
+                                                                        size="small"
+                                                                        style={{
+                                                                            borderColor: '#667eea',
+                                                                            color: '#667eea',
+                                                                            borderRadius: '20px',
+                                                                            fontSize: '0.75rem'
+                                                                        }}
+                                                                    >
+                                                                        View
+                                                                    </Button>
                                                                 </div>
-                                                                <p className="mb-1"><span className="fw-semibold">No. of Owners:</span> {bike.ownersCount}</p>
-                                                                <p className="mb-1"><span className="fw-semibold">Kilometres Run:</span> {bike.kilometresRun}</p>
-                                                                <p className="mb-1"><span className="fw-semibold">Model Year:</span> {bike.modelYear}</p>
-                                                                <p className="mb-1"><span className="fw-semibold">Posted On:</span> {bike.postedOn ? new Date(bike.postedOn).toLocaleString() : ''}</p>
                                                             </div>
                                                         </div>
                                                     </div>

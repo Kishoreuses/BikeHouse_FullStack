@@ -52,14 +52,14 @@ function SalesDetails() {
         </div>
       ) : (
         <div className="table-responsive">
-          <table className="table table-bordered table-hover align-middle bg-white shadow-sm">
+          <table className="table table-bordered table-hover align-middle bg-white shadow-sm" style={{ minWidth: '600px' }}>
             <thead className="table-primary">
               <tr>
                 <th>Bike</th>
                 <th>Seller</th>
                 <th>Buyer</th>
-                <th>Date Posted</th>
-                <th>Date Sold</th>
+                <th>Posted</th>
+                <th>Sold</th>
               </tr>
             </thead>
             <tbody>
@@ -134,7 +134,7 @@ function UserDetails() {
         </div>
       ) : (
         <div className="table-responsive">
-          <table className="table table-bordered table-hover align-middle bg-white shadow-sm">
+          <table className="table table-bordered table-hover align-middle bg-white shadow-sm" style={{ minWidth: '800px' }}>
             <thead className="table-primary">
               <tr>
                 <th>Username</th>
