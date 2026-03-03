@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const {
   signup, login, getProfile, updateProfile, deleteAccount,
-  addToCart, getCart, removeFromCart
+  addToCart, getCart, removeFromCart, changePassword
 } = require('../controllers/userController');
 const auth = require('../middleware/auth');
 const upload = require('../middleware/upload');
@@ -16,16 +16,16 @@ router.get('/test-db', async (req, res) => {
   try {
     const User = require('../models/User');
     const count = await User.countDocuments();
-    res.json({ 
-      message: 'Database connection working', 
+    res.json({
+      message: 'Database connection working',
       userCount: count,
-      timestamp: new Date().toISOString() 
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
     console.error('Database test failed:', error);
-    res.status(500).json({ 
-      message: 'Database connection failed', 
-      error: error.message 
+    res.status(500).json({
+      message: 'Database connection failed',
+      error: error.message
     });
   }
 });
@@ -43,6 +43,7 @@ router.put('/profile', auth, (req, res, next) => {
     next();
   });
 }, updateProfile);
+router.put('/change-password', auth, changePassword);
 router.delete('/profile', auth, deleteAccount);
 router.post('/cart', auth, addToCart);
 router.get('/cart', auth, getCart);

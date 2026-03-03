@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import API_URL from '../api/api';
 import { Container, Button, Snackbar, IconButton, Chip, Divider } from '@mui/material';
-import { Delete, ShoppingCart, LocalShipping, Payment, Favorite, Star, LocationOn, AttachMoney } from '@mui/icons-material';
+import { Delete, ShoppingCart, LocalShipping, Payment, Favorite, LocationOn } from '@mui/icons-material';
 
 function Cart() {
     const [cart, setCart] = useState([]);
@@ -32,8 +32,8 @@ function Cart() {
 
     const removeFromCart = async (bikeId) => {
         try {
-            await axios.delete(`${API_URL}/api/users/cart`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            await axios.delete(`${API_URL} /api/users / cart`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')} ` },
                 data: { bikeId }
             });
             setCart(cart.filter(bike => bike._id !== bikeId));
@@ -153,7 +153,7 @@ function Cart() {
                                                         <div className="col-md-4">
                                                             <div className="position-relative h-100">
                                                                 <img
-                                                                    src={bike.images && bike.images[0] ? `${API_URL}${bike.images[0]}` : 'https://via.placeholder.com/400x300/667eea/ffffff?text=Premium+Bike'}
+                                                                    src={bike.images && bike.images[0] ? `${API_URL}${bike.images[0]} ` : 'https://via.placeholder.com/400x300/667eea/ffffff?text=Premium+Bike'}
                                                                     alt={bike.model}
                                                                     className="w-100 h-100"
                                                                     style={{

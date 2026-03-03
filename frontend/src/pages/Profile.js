@@ -131,6 +131,36 @@ function Profile() {
         } catch { setBikesError('Failed to remove buyer.'); }
     };
 
+    // ── Password Change ──────────────────────────────────────────
+    const [passForm, setPassForm] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
+    const [passLoading, setPassLoading] = useState(false);
+    const [passMsg, setPassMsg] = useState('');
+    const [passErr, setPassErr] = useState('');
+
+    const handlePassChange = (e) => setPassForm({ ...passForm, [e.target.name]: e.target.value });
+
+    const handlePassSubmit = async (e) => {
+        e.preventDefault();
+        setPassMsg(''); setPassErr('');
+        if (passForm.newPassword !== passForm.confirmPassword) {
+            return setPassErr('New passwords do not match.');
+        }
+        if (passForm.newPassword.length < 6) {
+            return setPassErr('Password must be at least 6 characters.');
+        }
+        setPassLoading(true);
+        try {
+            const res = await axios.put(`${API_URL}/api/users/change-password`,
+                { oldPassword: passForm.oldPassword, newPassword: passForm.newPassword },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setPassMsg(res.data.message);
+            setPassForm({ oldPassword: '', newPassword: '', confirmPassword: '' });
+        } catch (err) {
+            setPassErr(err.response?.data?.message || 'Failed to change password.');
+        } finally { setPassLoading(false); }
+    };
+
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
@@ -166,8 +196,11 @@ function Profile() {
                         { key: 'profile', label: '👤 Profile' },
                         { key: 'mybikes', label: '🏍️ My Bikes' },
                         { key: 'customers', label: '📋 Customers' },
+                        { key: 'security', label: '🔒 Security' }
                     ].map(t => (
-                        <button key={t.key} style={tabStyle(activeTab === t.key)} onClick={() => { setActiveTab(t.key); setBikeMsg(''); setBikesError(''); }}>
+                        <button key={t.key} style={tabStyle(activeTab === t.key)} onClick={() => {
+                            setActiveTab(t.key); setBikeMsg(''); setBikesError(''); setPassMsg(''); setPassErr('');
+                        }}>
                             {t.label}
                         </button>
                     ))}
@@ -396,6 +429,56 @@ function Profile() {
                             </div>
                         ))
                     )}
+                </div>
+            )}
+
+            {/* ── TAB: Security (Password Change) ── */}
+            {activeTab === 'security' && (
+                <div className="card shadow-sm border-0">
+                    <div className="card-body p-4">
+                        <h5 className="fw-bold mb-4">Change Password</h5>
+                        {passMsg && <div className="alert alert-success py-2 small">{passMsg}</div>}
+                        {passErr && <div className="alert alert-danger py-2 small">{passErr}</div>}
+
+                        <form onSubmit={handlePassSubmit} style={{ maxWidth: 450 }}>
+                            <div className="mb-3">
+                                <label className="form-label fw-semibold small">Old Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="oldPassword"
+                                    value={passForm.oldPassword}
+                                    onChange={handlePassChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label fw-semibold small">New Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="newPassword"
+                                    value={passForm.newPassword}
+                                    onChange={handlePassChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="form-label fw-semibold small">Confirm New Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    name="confirmPassword"
+                                    value={passForm.confirmPassword}
+                                    onChange={handlePassChange}
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary px-4" disabled={passLoading}>
+                                {passLoading ? 'Updating...' : 'Update Password'}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             )}
         </div>
