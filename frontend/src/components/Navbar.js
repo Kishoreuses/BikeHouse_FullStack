@@ -226,7 +226,7 @@ function Navbar() {
                     {userProfile && userProfile.profileImage ? (
                       <>
                         {console.log('Rendering profile image:', userProfile.profileImage)}
-                        {console.log('Full image URL:', `http://localhost:5000${userProfile.profileImage}`)}
+                        {console.log('Full image URL:', `${API_URL}${userProfile.profileImage}`)}
                         <img
                           src={`${API_URL}${userProfile.profileImage}?t=${Date.now()}`}
                           alt="Profile"

@@ -16,6 +16,11 @@ app.use('/api/users', userRoutes);
 app.use('/api/bikes', bikeRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Root route
+app.get('/', (req, res) => {
+  res.send('BikeHouse Backend API Running');
+});
+
 // Check if MONGO_URI is available
 console.log('MONGO_URI available:', !!process.env.MONGO_URI);
 if (!process.env.MONGO_URI) {
