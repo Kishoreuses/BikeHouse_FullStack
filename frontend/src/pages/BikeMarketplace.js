@@ -26,6 +26,7 @@ function BikeMarketplace() {
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('newest');
     const [bookingLoading, setBookingLoading] = useState({});
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -156,6 +157,7 @@ function BikeMarketplace() {
 
     const handleBikeClick = (bike) => {
         setSelectedBike(bike);
+        setCurrentImageIndex(0);
         setModalOpen(true);
     };
 
@@ -311,19 +313,28 @@ function BikeMarketplace() {
                         <div className="row g-4">
                             <div className="col-md-6">
                                 <img
-                                    src={selectedBike?.images && selectedBike?.images[0] ? `${API_URL}${selectedBike.images[0]}` : 'https://via.placeholder.com/400x300?text=No+Image'}
+                                    src={selectedBike?.images && selectedBike?.images[currentImageIndex] ? `${API_URL}${selectedBike.images[currentImageIndex]}` : 'https://via.placeholder.com/400x300?text=No+Image'}
                                     alt={selectedBike?.model}
                                     className="img-fluid rounded mb-2"
                                     style={{ height: 300, objectFit: 'cover', width: '100%' }}
                                 />
                                 {selectedBike?.images && selectedBike.images.length > 1 && (
-                                    <div className="d-flex gap-2 mt-2 flex-wrap">
-                                        {selectedBike.images.slice(1, 5).map((image, index) => (
+                                    <div className="d-flex gap-2 mt-2 flex-wrap" style={{ maxHeight: '150px', overflowY: 'auto' }}>
+                                        {selectedBike.images.map((image, index) => (
                                             <img
                                                 key={index}
                                                 src={`${API_URL}${image}`}
-                                                alt={`${selectedBike.model} ${index + 2}`}
-                                                style={{ width: 80, height: 60, objectFit: 'cover', borderRadius: 4 }}
+                                                alt={`${selectedBike.model} ${index + 1}`}
+                                                onClick={() => setCurrentImageIndex(index)}
+                                                style={{ 
+                                                    width: 80, 
+                                                    height: 60, 
+                                                    objectFit: 'cover', 
+                                                    borderRadius: 4,
+                                                    cursor: 'pointer',
+                                                    border: currentImageIndex === index ? '2px solid #0d6efd' : '1px solid #dee2e6',
+                                                    opacity: currentImageIndex === index ? 1 : 0.6
+                                                }}
                                             />
                                         ))}
                                     </div>

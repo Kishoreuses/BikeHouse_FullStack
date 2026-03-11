@@ -229,9 +229,9 @@ exports.generatePDF = async (req, res) => {
       const path = require('path');
       const fs = require('fs');
       for (const img of bike.images) {
-        const imgPath = path.join(__dirname, '..', img);
+        const imgPath = path.join(__dirname, '..', 'uploads', path.basename(img));
         if (fs.existsSync(imgPath)) {
-          doc.image(imgPath, { width: 200 }).moveDown();
+          doc.image(imgPath, { fit: [400, 300], align: 'center' }).moveDown();
         }
       }
     }
@@ -276,9 +276,9 @@ exports.generateBikePDF = async (req, res) => {
     if (bike.images && bike.images.length > 0) {
       doc.fontSize(16).text('Bike Images:', { underline: true });
       for (const img of bike.images) {
-        const imgPath = path.join(__dirname, '..', img);
+        const imgPath = path.join(__dirname, '..', 'uploads', path.basename(img));
         if (fs.existsSync(imgPath)) {
-          doc.image(imgPath, { width: 200 }).moveDown();
+          doc.image(imgPath, { fit: [400, 300], align: 'center' }).moveDown();
         }
       }
     }
@@ -287,9 +287,9 @@ exports.generateBikePDF = async (req, res) => {
     if (bike.rc && bike.rc.length > 0) {
       doc.fontSize(16).text('RC Files:', { underline: true });
       for (const rc of bike.rc) {
-        const rcPath = path.join(__dirname, '..', rc);
+        const rcPath = path.join(__dirname, '..', 'uploads', path.basename(rc));
         if (fs.existsSync(rcPath)) {
-          doc.image(rcPath, { width: 200 }).moveDown();
+          doc.image(rcPath, { fit: [400, 300], align: 'center' }).moveDown();
         }
       }
     }
@@ -298,9 +298,9 @@ exports.generateBikePDF = async (req, res) => {
     if (bike.insurance && bike.insurance.length > 0) {
       doc.fontSize(16).text('Insurance Files:', { underline: true });
       for (const ins of bike.insurance) {
-        const insPath = path.join(__dirname, '..', ins);
+        const insPath = path.join(__dirname, '..', 'uploads', path.basename(ins));
         if (fs.existsSync(insPath)) {
-          doc.image(insPath, { width: 200 }).moveDown();
+          doc.image(insPath, { fit: [400, 300], align: 'center' }).moveDown();
         }
       }
     }
