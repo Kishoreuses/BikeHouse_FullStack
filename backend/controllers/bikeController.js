@@ -228,10 +228,16 @@ exports.generatePDF = async (req, res) => {
       doc.moveDown();
       const path = require('path');
       const fs = require('fs');
+      
+      const printableWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
       for (const img of bike.images) {
         const imgPath = path.join(__dirname, '..', 'uploads', path.basename(img));
         if (fs.existsSync(imgPath)) {
-          doc.image(imgPath, { fit: [400, 300], align: 'center' }).moveDown();
+          // Check if we need a new page for the image (assuming image will be up to 300pt tall)
+          if (doc.y + 300 > doc.page.height - doc.page.margins.bottom) {
+             doc.addPage();
+          }
+          doc.image(imgPath, { fit: [printableWidth, 300], align: 'center', valign: 'center' }).moveDown();
         }
       }
     }
@@ -273,12 +279,17 @@ exports.generateBikePDF = async (req, res) => {
     doc.moveDown();
 
     // Bike Images
+    const printableWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+
     if (bike.images && bike.images.length > 0) {
       doc.fontSize(16).text('Bike Images:', { underline: true });
       for (const img of bike.images) {
         const imgPath = path.join(__dirname, '..', 'uploads', path.basename(img));
         if (fs.existsSync(imgPath)) {
-          doc.image(imgPath, { fit: [400, 300], align: 'center' }).moveDown();
+          if (doc.y + 300 > doc.page.height - doc.page.margins.bottom) {
+             doc.addPage();
+          }
+          doc.image(imgPath, { fit: [printableWidth, 300], align: 'center', valign: 'center' }).moveDown();
         }
       }
     }
@@ -379,5 +390,79 @@ exports.removeBuyer = async (req, res) => {
   } catch (error) {
     console.error('Error removing buyer:', error);
     res.status(500).json({ message: 'Failed to remove buyer' });
+  }
+};
+
+exports.generateAllBikesPDF = async (req, res) => {
+  try {
+    const Bike = require('../models/Bike');
+    // Find all active bikes that are not sold
+    const bikes = await Bike.find({ sold: false }).populate('owner', 'username phone location');
+    
+    if (!bikes || bikes.length === 0) {
+      return res.status(404).json({ message: 'No bikes found' });
+    }
+
+    const doc = new PDFDocument({ autoFirstPage: false });
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="bikehouse_catalogue.pdf"`);
+    
+    doc.pipe(res);
+    doc.addPage();
+    doc.fontSize(28).text('BikeHouse Active Catalogue', { align: 'center', underline: true });
+    doc.fontSize(12).text(`Generated on: ${new Date().toLocaleDateString()}`, { align: 'center' });
+    doc.moveDown(2);
+
+    const printableWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+
+    bikes.forEach((bike, index) => {
+      // Create a page break between bikes, unless it's the very first one
+      if (index > 0) {
+        doc.addPage();
+      }
+
+      doc.fontSize(20).text(`${bike.brand} ${bike.model}`, { align: 'center' });
+      doc.moveDown();
+      
+      doc.fontSize(16).text(`Price: ₹${bike.price}`, { underline: true });
+      doc.moveDown();
+
+      doc.fontSize(14).text('Specifications');
+      doc.fontSize(12).text(`Location: ${bike.location || 'N/A'}`);
+      doc.fontSize(12).text(`Color: ${bike.color || 'N/A'}`);
+      doc.fontSize(12).text(`Number of Owners: ${bike.ownersCount || 'N/A'}`);
+      doc.fontSize(12).text(`Kilometres Run: ${bike.kilometresRun || 'N/A'}`);
+      doc.fontSize(12).text(`Model Year: ${bike.modelYear || 'N/A'}`);
+      doc.fontSize(12).text(`Posted On: ${bike.postedOn ? new Date(bike.postedOn).toLocaleString() : 'N/A'}`);
+      doc.moveDown();
+
+      doc.fontSize(14).text('Description');
+      doc.fontSize(12).text(bike.description || 'No description');
+      doc.moveDown();
+
+      doc.fontSize(14).text('Owner Details');
+      doc.fontSize(12).text(`Seller Name: ${bike.owner?.username || 'N/A'}`);
+      doc.fontSize(12).text(`Seller Phone: ${bike.owner?.phone || 'N/A'}`);
+      doc.moveDown();
+
+      // Bike Images
+      if (bike.images && bike.images.length > 0) {
+        doc.fontSize(14).text('Images:', { underline: true });
+        for (const img of bike.images) {
+          const imgPath = path.join(__dirname, '..', 'uploads', path.basename(img));
+          if (fs.existsSync(imgPath)) {
+            if (doc.y + 300 > doc.page.height - doc.page.margins.bottom) {
+               doc.addPage();
+            }
+            doc.image(imgPath, { fit: [printableWidth, 300], align: 'center', valign: 'center' }).moveDown();
+          }
+        }
+      }
+    });
+
+    doc.end();
+  } catch (err) {
+    console.error('Error generating all bikes PDF catalogue:', err);
+    res.status(500).json({ message: 'Failed to generate catalogue', error: err.message });
   }
 };

@@ -1,5 +1,5 @@
 const express = require('express');
-const { createBike, getBikes, getBike, updateBike, deleteBike, markAsSold, markAsAvailable, generatePDF, generateBikePDF, bookBike, removeBuyer } = require('../controllers/bikeController');
+const { createBike, getBikes, getBike, updateBike, deleteBike, markAsSold, markAsAvailable, generatePDF, generateBikePDF, bookBike, removeBuyer, generateAllBikesPDF } = require('../controllers/bikeController');
 const auth = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const router = express.Router();
@@ -13,6 +13,7 @@ const uploadFields = upload.fields([
 
 router.post('/', auth, uploadFields, createBike);
 router.post('/generate-pdf', auth, generatePDF);
+router.get('/pdf/all', generateAllBikesPDF);
 router.get('/', getBikes);
 router.get('/:id', getBike);
 router.get('/:id/pdf', auth, generateBikePDF);

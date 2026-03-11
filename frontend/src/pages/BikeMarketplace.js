@@ -300,6 +300,31 @@ function BikeMarketplace() {
         window.URL.revokeObjectURL(url);
     };
 
+    // Download All Bikes PDF handler
+    const handleDownloadAllPDF = async () => {
+        try {
+            setAlert({ show: true, message: 'Generating catalogue, please wait...', type: 'info' });
+            const response = await fetch(`${API_URL}/api/bikes/pdf/all`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to download catalogue');
+            }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bikehouse_catalogue.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            setAlert({ show: true, message: 'Catalogue downloaded successfully!', type: 'success' });
+        } catch (error) {
+            setAlert({ show: true, message: 'Failed to download catalogue', type: 'danger' });
+        }
+    };
+
     // Bike Details Modal
     const BikeDetailsModal = () => (
         <div className={`modal fade ${modalOpen ? 'show d-block' : ''}`} tabIndex="-1" style={{ background: 'rgba(0,0,0,0.5)' }}>
@@ -422,17 +447,21 @@ function BikeMarketplace() {
 
             {/* Search Bar */}
             <div className="card card-body mb-4">
-                <div className="d-flex gap-2 align-items-center">
-                    <i className="bi bi-search text-secondary fs-4"></i>
+                <div className="d-flex gap-2 align-items-center flex-wrap">
+                    <i className="bi bi-search text-secondary fs-4 d-none d-md-block"></i>
                     <input
                         type="text"
-                        className="form-control form-control-lg"
+                        className="form-control form-control-lg flex-grow-1"
                         placeholder="Search bikes by brand, model, location..."
                         value={searchQuery}
                         onChange={e => setSearchQuery(e.target.value)}
+                        style={{ minWidth: '200px' }}
                     />
-                    <button className="btn btn-outline-primary btn-sm btn-md-lg" onClick={() => setFilterOpen(!filterOpen)}>
+                    <button className="btn btn-outline-primary btn-md-lg" onClick={() => setFilterOpen(!filterOpen)}>
                         <i className="bi bi-funnel"></i> <span className="d-none d-md-inline">Filters</span>
+                    </button>
+                    <button className="btn btn-primary btn-md-lg" onClick={handleDownloadAllPDF}>
+                        <i className="bi bi-file-earmark-pdf"></i> <span className="d-none d-md-inline">Download Catalogue</span>
                     </button>
                 </div>
             </div>
