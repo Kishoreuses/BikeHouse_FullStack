@@ -1,6 +1,53 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+
+// ── Nodemailer transporter ──────────────────────────────────────────────
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+const sendSignupNotification = async (newUser) => {
+  try {
+    await transporter.sendMail({
+      from: `"BikeHouse 🏍️" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER, // sends to yourself (admin)
+      subject: '🎉 New User Registered on BikeHouse!',
+      html: `
+        <div style="font-family:Poppins,Arial,sans-serif;max-width:600px;margin:0 auto;background:#0d1117;color:#e6edf3;border-radius:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#f7931e 0%,#ffd700 100%);padding:28px 32px;">
+            <h1 style="margin:0;color:#000;font-size:24px;font-weight:900;">🏍️ BikeHouse</h1>
+            <p style="margin:6px 0 0;color:rgba(0,0,0,0.65);font-size:14px;">New User Registration Alert</p>
+          </div>
+          <div style="padding:28px 32px;">
+            <h2 style="color:#f7931e;font-size:18px;margin:0 0 20px;">🎉 A new user just joined BikeHouse!</h2>
+            <table style="width:100%;border-collapse:collapse;">
+              <tr><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);color:#8b949e;font-size:13px;width:140px;">Name</td><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);font-weight:600;">${newUser.firstName || ''} ${newUser.lastName || ''}</td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);color:#8b949e;font-size:13px;">Username</td><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);font-weight:600;">@${newUser.username}</td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);color:#8b949e;font-size:13px;">Phone</td><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);font-weight:600;">${newUser.phone || 'N/A'}</td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);color:#8b949e;font-size:13px;">Location</td><td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);font-weight:600;">${newUser.location || 'N/A'}</td></tr>
+              <tr><td style="padding:10px 0;color:#8b949e;font-size:13px;">Registered At</td><td style="padding:10px 0;font-weight:600;">${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST</td></tr>
+            </table>
+            <div style="margin-top:24px;padding:16px;background:rgba(247,147,30,0.10);border:1px solid rgba(247,147,30,0.25);border-radius:10px;">
+              <p style="margin:0;font-size:13px;color:#8b949e;">You can manage this user from the <strong style="color:#f7931e;">Admin Dashboard → Users</strong> section.</p>
+            </div>
+          </div>
+          <div style="padding:16px 32px;background:rgba(255,255,255,0.04);text-align:center;">
+            <p style="margin:0;color:#6e7681;font-size:12px;">BikeHouse — India's Trusted Bike Marketplace</p>
+          </div>
+        </div>
+      `,
+    });
+    console.log('✅ Signup notification email sent to admin.');
+  } catch (err) {
+    console.error('⚠️ Failed to send signup notification email:', err.message);
+  }
+};
 
 exports.signup = async (req, res) => {
   try {
@@ -39,11 +86,15 @@ exports.signup = async (req, res) => {
     const savedUser = await User.findById(user._id);
     console.log('Verified saved user:', JSON.stringify(savedUser.toObject(), null, 2));
 
+    // Send signup notification email to admin (non-blocking)
+    sendSignupNotification({ firstName, lastName, username, phone, location });
+
     res.status(201).json({ message: 'Signup successful' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 exports.login = async (req, res) => {
   try {
@@ -101,8 +152,10 @@ exports.updateProfile = async (req, res) => {
 
     // Handle profile image upload
     if (req.file) {
-      updates.profileImage = req.file.path;
-      console.log('Profile image path:', req.file.path);
+      // Normalize path: Windows uses backslashes, convert to forward slashes for URLs
+      const normalizedPath = '/' + req.file.path.replace(/\\/g, '/');
+      updates.profileImage = normalizedPath;
+      console.log('Profile image path (normalized):', normalizedPath);
     }
 
     // Handle form data

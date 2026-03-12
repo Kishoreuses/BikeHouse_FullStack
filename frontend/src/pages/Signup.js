@@ -3,8 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import API_URL from '../api/api';
 
-const backgroundImage =
-  'https://t4.ftcdn.net/jpg/08/63/30/05/360_F_863300589_NojEYK8ktAoHEbIQEpTv8VUFAlMR49xx.jpg';
+const bgImage = 'https://t4.ftcdn.net/jpg/08/63/30/05/360_F_863300589_NojEYK8ktAoHEbIQEpTv8VUFAlMR49xx.jpg';
 
 function Signup() {
   const [form, setForm] = useState({
@@ -14,27 +13,19 @@ function Signup() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
     const errs = {};
     if (!form.firstName.trim()) errs.firstName = 'First name is required';
     if (!form.lastName.trim()) errs.lastName = 'Last name is required';
-    if (!form.username.trim()) {
-      errs.username = 'Username is required';
-    } else if (form.username.length < 3) {
-      errs.username = 'Username must be at least 3 characters';
-    }
-    if (!form.password) {
-      errs.password = 'Password is required';
-    } else if (form.password.length < 6) {
-      errs.password = 'Password must be at least 6 characters';
-    }
-    if (!form.phone.trim()) {
-      errs.phone = 'Phone number is required';
-    } else if (!/^\d{10}$/.test(form.phone)) {
-      errs.phone = 'Phone number must be 10 digits';
-    }
+    if (!form.username.trim()) errs.username = 'Username is required';
+    else if (form.username.length < 3) errs.username = 'Username must be at least 3 characters';
+    if (!form.password) errs.password = 'Password is required';
+    else if (form.password.length < 6) errs.password = 'Password must be at least 6 characters';
+    if (!form.phone.trim()) errs.phone = 'Phone number is required';
+    else if (!/^\d{10}$/.test(form.phone)) errs.phone = 'Phone number must be 10 digits';
     if (!form.location.trim()) errs.location = 'Location is required';
     if (!form.address.trim()) errs.address = 'Address is required';
     return errs;
@@ -47,6 +38,7 @@ function Signup() {
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
+    setLoading(true);
     try {
       await axios.post(`${API_URL}/api/users/signup`, form);
       setMessage('Signup successful! Redirecting...');
@@ -55,141 +47,137 @@ function Signup() {
     } catch (err) {
       setMessage(err.response?.data?.message || 'Signup failed');
       setOpen(true);
+    } finally {
+      setLoading(false);
     }
   };
 
+  const inputStyle = (hasError) => ({
+    background: 'rgba(255,255,255,0.07)',
+    border: `1.5px solid ${hasError ? '#ef4444' : 'rgba(255,255,255,0.14)'}`,
+    borderRadius: 10, color: '#e6edf3',
+    padding: '0.68rem 0.9rem', fontSize: '0.9rem',
+    width: '100%', fontFamily: 'Poppins, sans-serif', outline: 'none',
+    transition: 'all 0.22s ease',
+  });
+
+  const onFocus = e => { e.target.style.borderColor = '#f7931e'; e.target.style.boxShadow = '0 0 0 3px rgba(247,147,30,0.18)'; };
+  const onBlur = (hasErr) => e => { e.target.style.borderColor = hasErr ? '#ef4444' : 'rgba(255,255,255,0.14)'; e.target.style.boxShadow = 'none'; };
+
+  const fields = [
+    { name: 'firstName', label: 'First Name', type: 'text', placeholder: 'John', half: true },
+    { name: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Doe', half: true },
+    { name: 'username', label: 'Username', type: 'text', placeholder: 'johndoe', half: true },
+    { name: 'phone', label: 'Phone Number', type: 'tel', placeholder: '9876543210', half: true },
+    { name: 'password', label: 'Password', type: 'password', placeholder: '••••••••', half: true },
+    { name: 'location', label: 'Location', type: 'text', placeholder: 'Chennai, TN', half: true },
+    { name: 'address', label: 'Address', type: 'text', placeholder: 'Your full address', half: false },
+  ];
+
   return (
     <>
-      <div
-        style={{
-          minHeight: '100vh',
-          width: '100%',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          zIndex: -1,
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(8px) brightness(0.7)'
-        }}
-      />
-      <div className="container d-flex align-items-center justify-content-center min-vh-100 animate__animated animate__fadeIn">
-        <div className="card shadow-lg p-3 p-md-5 rounded-5 w-100 mx-2" style={{ maxWidth: 650, background: 'linear-gradient(135deg, #e3f0ff 0%, #f8faff 100%)' }}>
-          <div className="text-center mb-4">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPaKlSW5mpdJ1VdekmO9xedXM_TmkuO6tbwGeilzMzShKE6T_6sp7MtY6gUcNelgHWHxQ&usqp=CAU"
-              alt="BikeHouse Logo"
-              style={{ width: 'clamp(80px, 15vw, 120px)', height: 'auto', marginBottom: 16 }}
-            />
-            <h2 className="fw-bold text-primary mb-1" style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>Create Your Account</h2>
-            <h5 className="text-secondary mb-0" style={{ fontSize: 'clamp(0.9rem, 3vw, 1.1rem)' }}>Join BikeHouse and start your journey!</h5>
-          </div>
-          <form noValidate onSubmit={handleSubmit} className="needs-validation" autoComplete="off">
-            <div className="row g-2 g-md-3">
-              <div className="col-md-6">
-                <label htmlFor="firstName" className="form-label">First Name</label>
-                <input
-                  type="text"
-                  className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                  id="firstName"
-                  name="firstName"
-                  value={form.firstName}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="lastName" className="form-label">Last Name</label>
-                <input
-                  type="text"
-                  className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                  id="lastName"
-                  name="lastName"
-                  value={form.lastName}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="username" className="form-label">Username</label>
-                <input
-                  type="text"
-                  className={`form-control ${errors.username ? 'is-invalid' : ''}`}
-                  id="username"
-                  name="username"
-                  value={form.username}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.username && <div className="invalid-feedback">{errors.username}</div>}
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="phone" className="form-label">Phone Number</label>
-                <input
-                  type="tel"
-                  className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
-                  id="phone"
-                  name="phone"
-                  value={form.phone}
-                  onChange={handleChange}
-                  required
-                  placeholder="9876543210"
-                />
-                {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="password" className="form-label">Password</label>
-                <input
-                  type="password"
-                  className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                  id="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="location" className="form-label">Location</label>
-                <input
-                  type="text"
-                  className={`form-control ${errors.location ? 'is-invalid' : ''}`}
-                  id="location"
-                  name="location"
-                  value={form.location}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.location && <div className="invalid-feedback">{errors.location}</div>}
-              </div>
-              <div className="col-12">
-                <label htmlFor="address" className="form-label">Address</label>
-                <input
-                  type="text"
-                  className={`form-control ${errors.address ? 'is-invalid' : ''}`}
-                  id="address"
-                  name="address"
-                  value={form.address}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.address && <div className="invalid-feedback">{errors.address}</div>}
-              </div>
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 0,
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover', backgroundPosition: 'center',
+        filter: 'blur(10px) brightness(0.35)', transform: 'scale(1.05)',
+      }} />
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 1,
+        background: 'linear-gradient(135deg, rgba(13,17,23,0.72) 0%, rgba(15,32,39,0.80) 100%)',
+      }} />
+
+      <div style={{
+        position: 'relative', zIndex: 2, minHeight: '100vh',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '1.5rem 1rem',
+      }}>
+        <div style={{
+          width: '100%', maxWidth: 700,
+          background: 'rgba(13,17,23,0.88)',
+          backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255,255,255,0.10)',
+          borderRadius: 20, boxShadow: '0 24px 64px rgba(0,0,0,0.60)',
+          padding: 'clamp(1.8rem, 5vw, 2.8rem)',
+          animation: 'fadeInUp 0.5s ease both',
+        }}>
+
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: '1.8rem' }}>
+            <div style={{
+              width: 64, height: 64, borderRadius: 12, margin: '0 auto 1rem',
+              border: '2px solid rgba(247,147,30,0.65)', overflow: 'hidden',
+              boxShadow: '0 0 24px rgba(247,147,30,0.30)',
+            }}>
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPaKlSW5mpdJ1VdekmO9xedXM_TmkuO6tbwGeilzMzShKE6T_6sp7MtY6gUcNelgHWHxQ&usqp=CAU"
+                alt="BikeHouse Logo"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
             </div>
-            <button type="submit" className="btn btn-primary btn-lg w-100 mt-4">Sign Up</button>
-          </form>
-          <div className="mt-4 text-center">
-            <span className="fs-6">Already have an account?{' '}</span>
-            <Link to="/login" className="fw-bold text-primary text-decoration-none fs-6">Login</Link>
+            <h2 style={{ fontSize: 'clamp(1.4rem,4vw,1.9rem)', fontWeight: 800, color: '#fff', marginBottom: 6, letterSpacing: -0.5 }}>
+              Create Your Account
+            </h2>
+            <p style={{ color: '#8b949e', margin: 0, fontSize: '0.9rem' }}>
+              Join <span style={{ color: '#f7931e', fontWeight: 600 }}>BikeHouse</span> and start your journey!
+            </p>
           </div>
+
+          {/* Form */}
+          <form noValidate onSubmit={handleSubmit} autoComplete="off">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              {fields.map(f => (
+                <div key={f.name} style={{ gridColumn: f.half ? 'span 1' : 'span 2' }}>
+                  <label style={labelStyle}>{f.label}</label>
+                  <input
+                    type={f.type}
+                    name={f.name}
+                    value={form[f.name]}
+                    onChange={handleChange}
+                    placeholder={f.placeholder}
+                    required
+                    style={inputStyle(errors[f.name])}
+                    onFocus={onFocus}
+                    onBlur={onBlur(errors[f.name])}
+                  />
+                  {errors[f.name] && <span style={errStyle}>{errors[f.name]}</span>}
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: '100%', marginTop: '1.6rem', padding: '0.85rem',
+                background: loading ? 'rgba(247,147,30,0.5)' : 'linear-gradient(135deg,#f7931e 0%,#ffd700 100%)',
+                border: 'none', borderRadius: 50, color: '#000',
+                fontWeight: 800, fontSize: '1rem', cursor: loading ? 'not-allowed' : 'pointer',
+                boxShadow: '0 6px 24px rgba(247,147,30,0.35)',
+                transition: 'all 0.22s ease', fontFamily: 'Poppins, sans-serif',
+              }}
+            >
+              {loading ? 'Creating Account...' : 'Create Account →'}
+            </button>
+          </form>
+
+          <div style={{ textAlign: 'center', marginTop: '1.4rem' }}>
+            <span style={{ color: '#8b949e', fontSize: '0.9rem' }}>Already have an account? </span>
+            <Link to="/login" style={{ color: '#f7931e', fontWeight: 700, textDecoration: 'none', fontSize: '0.9rem' }}>Login</Link>
+          </div>
+
           {open && (
-            <div className="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-              {message}
-              <button type="button" className="btn-close" onClick={() => setOpen(false)} aria-label="Close"></button>
+            <div style={{
+              marginTop: '1rem', padding: '0.75rem 1rem',
+              background: message.includes('successful') ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)',
+              border: `1px solid ${message.includes('successful') ? 'rgba(34,197,94,0.40)' : 'rgba(239,68,68,0.40)'}`,
+              borderRadius: 10,
+              color: message.includes('successful') ? '#22c55e' : '#ef4444',
+              fontSize: '0.88rem',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            }}>
+              <span>{message}</span>
+              <button onClick={() => setOpen(false)} style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', fontSize: 16 }}>✕</button>
             </div>
           )}
         </div>
@@ -197,5 +185,14 @@ function Signup() {
     </>
   );
 }
+
+const labelStyle = {
+  display: 'block', color: '#8b949e', fontSize: '0.76rem',
+  fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 6,
+};
+
+const errStyle = {
+  color: '#ef4444', fontSize: '0.78rem', marginTop: 4, display: 'block',
+};
 
 export default Signup;

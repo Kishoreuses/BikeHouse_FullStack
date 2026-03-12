@@ -21,45 +21,28 @@ function Navbar() {
           const response = await axios.get(`${API_URL}/api/users/profile`, {
             headers: { Authorization: `Bearer ${token}` }
           });
-          if (isMounted) {
-            console.log('User profile data received:', response.data);
-            setUserProfile(response.data);
-
-            // Test image accessibility if profile image exists
-            if (response.data.profileImage) {
-              testImageUrl(response.data.profileImage).then(isAccessible => {
-                console.log('Profile image accessible:', isAccessible);
-              });
-            }
-          }
+          if (isMounted) setUserProfile(response.data);
         } catch (error) {
           console.error('Error fetching user profile:', error);
         } finally {
-          if (isMounted) {
-            setLoading(false);
-          }
+          if (isMounted) setLoading(false);
         }
       }
     };
 
     fetchUserProfile();
 
-    // Listen for profile updates
     const handleProfileUpdate = (event) => {
-      console.log('Profile update event received in navbar');
       if (isMounted) {
         if (event.detail && event.detail.profileData) {
-          console.log('Updating navbar with new profile data:', event.detail.profileData);
           setUserProfile(event.detail.profileData);
         } else {
-          console.log('Fetching profile data from server');
           fetchUserProfile();
         }
       }
     };
 
     window.addEventListener('profileUpdated', handleProfileUpdate);
-
     return () => {
       isMounted = false;
       window.removeEventListener('profileUpdated', handleProfileUpdate);
@@ -68,33 +51,12 @@ function Navbar() {
 
   const handleLogout = () => {
     try {
-      // Clear all state first
       setUserProfile(null);
       setLoading(false);
-
-      // Remove token
       localStorage.removeItem('token');
-
-      // Use setTimeout to ensure state updates are processed before navigation
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 0);
+      setTimeout(() => { window.location.href = '/login'; }, 0);
     } catch (error) {
-      console.error('Logout error:', error);
-      // Fallback to simple redirect
       window.location.href = '/login';
-    }
-  };
-
-  // Test function to check image accessibility
-  const testImageUrl = async (imagePath) => {
-    if (!imagePath) return false;
-    try {
-      const response = await fetch(`${API_URL}${imagePath}`);
-      return response.ok;
-    } catch (error) {
-      console.error('Image test failed:', error);
-      return false;
     }
   };
 
@@ -103,7 +65,11 @@ function Navbar() {
   const isAdmin = user && user.role === 'admin';
 
   if (userProfile) {
-    profileName = isAdmin ? 'Admin' : userProfile.firstName ? `${userProfile.firstName} ${userProfile.lastName}` : userProfile.username || '';
+    profileName = isAdmin
+      ? 'Admin'
+      : userProfile.firstName
+        ? `${userProfile.firstName} ${userProfile.lastName}`
+        : userProfile.username || '';
     originalUsername = userProfile.username || '';
   } else if (user) {
     profileName = isAdmin ? 'Admin' : user.username || '';
@@ -112,209 +78,213 @@ function Navbar() {
 
   return (
     <nav
-      className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-lg animate__animated animate__fadeInDown"
+      className="navbar navbar-expand-lg sticky-top"
       style={{
-        fontFamily: 'Poppins, Roboto, Arial, sans-serif',
-        minHeight: 70,
-        borderBottom: '2px solid #1565c0',
+        background: 'rgba(13, 17, 23, 0.97)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 2px 20px rgba(0,0,0,0.40)',
+        fontFamily: 'Poppins, sans-serif',
+        zIndex: 1050,
+        minHeight: 68,
       }}
     >
-      <div className="container-fluid">
+      <div className="container-fluid px-4">
+
+        {/* Brand */}
         <Link
-          className="navbar-brand d-flex align-items-center fw-bold fs-4 fs-md-2"
-          to={isAdmin ? "/admin" : "/"}
-          style={{
-            fontFamily: 'Poppins, Roboto, Arial, sans-serif',
-            letterSpacing: 1,
-            color: '#fff',
-            fontWeight: 900,
-            textShadow: '1px 2px 8px rgba(0,0,0,0.2)'
-          }}
+          className="navbar-brand d-flex align-items-center gap-2 text-decoration-none"
+          to={isAdmin ? '/admin' : '/'}
         >
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPaKlSW5mpdJ1VdekmO9xedXM_TmkuO6tbwGeilzMzShKE6T_6sp7MtY6gUcNelgHWHxQ&usqp=CAU"
-            alt="BikeHouse Logo"
-            className="navbar-logo-img"
-            style={{ width: 'clamp(40px, 8vw, 60px)', height: 'auto', marginRight: 10, borderRadius: 8 }}
-          />
-          <span className="d-none d-sm-inline">BIKEHOUSE</span>
+          <div style={{
+            width: 40, height: 40, borderRadius: 9,
+            border: '2px solid rgba(247,147,30,0.65)',
+            overflow: 'hidden', flexShrink: 0,
+            boxShadow: '0 0 14px rgba(247,147,30,0.25)',
+          }}>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPaKlSW5mpdJ1VdekmO9xedXM_TmkuO6tbwGeilzMzShKE6T_6sp7MtY6gUcNelgHWHxQ&usqp=CAU"
+              alt="BikeHouse"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </div>
+          <span style={{
+            fontWeight: 900, fontSize: '1.25rem', letterSpacing: 1.5,
+            background: 'linear-gradient(135deg, #ffffff 40%, #f7931e 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
+            BIKEHOUSE
+          </span>
         </Link>
+
+        {/* Mobile toggler */}
         <button
-          className="navbar-toggler"
+          className="navbar-toggler border-0"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          style={{ color: '#f7931e' }}
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon" style={{ filter: 'invert(1)' }}></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+
+        {/* Collapsible */}
+        <div className="collapse navbar-collapse" id="mainNavbar">
+
+          {/* Nav Links */}
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             {isAdmin ? (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/admin">
-                    <span className="fw-bold">Dashboard</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/sales">
-                    <span className="fw-bold">Sales</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/users">
-                    <span className="fw-bold">User Details</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/about">
-                    <span className="fw-bold">About</span>
-                  </Link>
-                </li>
+                <NavItem to="/admin" label="Dashboard" />
+                <NavItem to="/sales" label="Sales" />
+                <NavItem to="/users" label="User Details" />
+                <NavItem to="/about" label="About" />
               </>
             ) : (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/">
-                    <span className="fw-bold">Home</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/marketplace">
-                    <span className="fw-bold">Buy Bikes</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/sale">
-                    <span className="fw-bold">Sell Bike</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/cart">
-                    <span className="fw-bold">Cart</span>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-link-custom px-3" to="/about">
-                    <span className="fw-bold">About</span>
-                  </Link>
-                </li>
+                <NavItem to="/" label="Home" />
+                <NavItem to="/marketplace" label="Buy Bikes" />
+                <NavItem to="/sale" label="Sell Bike" />
+                <NavItem to="/cart" label="Cart" />
+                <NavItem to="/about" label="About" />
               </>
             )}
           </ul>
+
+          {/* Right side */}
           <div className="d-flex align-items-center gap-3">
             {user ? (
               <>
-                <div className="d-flex align-items-center gap-2">
-                  <div
-                    className="rounded-circle bg-white text-primary fw-bold d-flex justify-content-center align-items-center shadow-sm overflow-hidden"
-                    style={{
-                      width: 40,
-                      height: 40,
-                      cursor: 'pointer',
-                      fontSize: 18,
-                      border: '2px solid #fff',
-                      fontFamily: 'Poppins, Roboto, Arial, sans-serif',
-                      position: 'relative'
-                    }}
-                    onClick={() => navigate('/profile')}
-                    key={userProfile?.profileImage || 'no-image'}
-                  >
-                    {userProfile && userProfile.profileImage ? (
-                      <>
-                        {console.log('Rendering profile image:', userProfile.profileImage)}
-                        {console.log('Full image URL:', `${API_URL}${userProfile.profileImage}`)}
-                        <img
-                          src={`${API_URL}${userProfile.profileImage}?t=${Date.now()}`}
-                          alt="Profile"
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            borderRadius: '50%'
-                          }}
-                          onError={(e) => {
-                            console.log('Profile image failed to load:', e.target.src);
-                            e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'flex';
-                          }}
-                          onLoad={(e) => {
-                            console.log('Profile image loaded successfully:', e.target.src);
-                          }}
-                        />
-                      </>
-                    ) : (
-                      console.log('No profile image available, showing initials')
-                    )}
-                    <div
-                      className="d-flex justify-content-center align-items-center"
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        display: userProfile && userProfile.profileImage ? 'none' : 'flex',
-                        backgroundColor: '#fff',
-                        color: '#1976d2',
-                        fontSize: '18px',
-                        fontWeight: 'bold'
+                {/* Avatar */}
+                <div
+                  onClick={() => navigate('/profile')}
+                  style={{
+                    width: 38, height: 38, borderRadius: '50%', cursor: 'pointer',
+                    border: '2px solid rgba(247,147,30,0.70)',
+                    overflow: 'hidden', flexShrink: 0,
+                    boxShadow: '0 0 10px rgba(247,147,30,0.28)',
+                    position: 'relative',
+                  }}
+                  key={userProfile?.profileImage || 'avatar'}
+                >
+                  {userProfile && userProfile.profileImage ? (
+                    <img
+                      src={`${API_URL}${userProfile.profileImage.startsWith('/') ? '' : '/'}${userProfile.profileImage}?t=${Date.now()}`}
+                      alt="Profile"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
                       }}
-                    >
-                      {(profileName && profileName.charAt(0).toUpperCase()) || 'U'}
-                    </div>
+                    />
+                  ) : null}
+                  <div style={{
+                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                    display: userProfile?.profileImage ? 'none' : 'flex',
+                    alignItems: 'center', justifyContent: 'center',
+                    background: 'linear-gradient(135deg,#1e3a5f,#0f2027)',
+                    color: '#f7931e', fontSize: 16, fontWeight: 700,
+                  }}>
+                    {(profileName && profileName.charAt(0).toUpperCase()) || 'U'}
                   </div>
-                  <div className="d-flex flex-column align-items-start justify-content-center d-none d-md-flex" style={{ minWidth: 90 }}>
-                    {loading ? (
-                      <span className="fw-bold text-white fs-6" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
-                        Loading...
-                      </span>
-                    ) : (
-                      <>
-                        <span className="fw-bold text-white fs-6" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }}>
-                          {profileName || 'User'}
-                        </span>
-                        {originalUsername && originalUsername !== profileName && (
-                          <span className="text-white-50 small" style={{ fontSize: 12, marginTop: -4 }}>
-                            @{originalUsername}
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </div>
-                  <button className="btn btn-outline-light btn-sm px-3 ms-md-2" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} onClick={handleLogout}>
-                    <span className="mb-0 fw-bold">Logout</span>
-                  </button>
                 </div>
+
+                {/* Name */}
+                <div className="d-none d-lg-flex flex-column" style={{ lineHeight: 1.2 }}>
+                  {loading ? (
+                    <span style={{ color: '#8b949e', fontSize: 13 }}>Loading...</span>
+                  ) : (
+                    <>
+                      <span style={{ color: '#ffffff', fontWeight: 700, fontSize: 14 }}>
+                        {profileName || 'User'}
+                      </span>
+                      {originalUsername && originalUsername !== profileName && (
+                        <span style={{ color: '#8b949e', fontSize: 11 }}>@{originalUsername}</span>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                {/* Logout button */}
+                <button
+                  className="btn btn-sm"
+                  onClick={handleLogout}
+                  style={{
+                    background: 'transparent',
+                    border: '1.5px solid rgba(247,147,30,0.55)',
+                    color: '#f7931e', fontWeight: 700, borderRadius: 50,
+                    padding: '5px 16px', fontSize: 13,
+                    fontFamily: 'Poppins, sans-serif',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={e => { e.target.style.background = 'rgba(247,147,30,0.14)'; e.target.style.borderColor = '#f7931e'; }}
+                  onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.borderColor = 'rgba(247,147,30,0.55)'; }}
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <>
-                <Link className="btn btn-outline-light btn-sm px-3 me-2" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} to="/login">
-                  <span className="mb-0 fw-bold">Login</span>
+                <Link
+                  to="/login"
+                  className="btn btn-sm"
+                  style={{
+                    border: '1.5px solid rgba(255,255,255,0.25)',
+                    color: 'rgba(255,255,255,0.85)', fontWeight: 600,
+                    borderRadius: 50, padding: '5px 18px', fontSize: 13,
+                    fontFamily: 'Poppins, sans-serif', transition: 'all 0.2s',
+                  }}
+                >
+                  Login
                 </Link>
-                <Link className="btn btn-warning btn-sm px-3" style={{ fontFamily: 'Poppins, Roboto, Arial, sans-serif' }} to="/signup">
-                  <span className="mb-0 fw-bold">Signup</span>
+                <Link
+                  to="/signup"
+                  className="btn btn-sm"
+                  style={{
+                    background: 'linear-gradient(135deg,#f7931e 0%,#ffd700 100%)',
+                    border: 'none', color: '#000', fontWeight: 700,
+                    borderRadius: 50, padding: '5px 18px', fontSize: 13,
+                    boxShadow: '0 4px 14px rgba(247,147,30,0.35)',
+                    fontFamily: 'Poppins, sans-serif',
+                  }}
+                >
+                  Sign Up
                 </Link>
               </>
             )}
           </div>
         </div>
+
       </div>
-      <style>{`
-        .nav-link-custom {
-          color: #fff !important;
-          border-radius: 8px;
-          transition: background 0.2s, color 0.2s;
-        }
-        .nav-link-custom:hover, .nav-link-custom.active {
-          background: #1565c0 !important;
-          color: #fff !important;
-        }
-      `}</style>
     </nav>
+  );
+}
+
+function NavItem({ to, label }) {
+  const current = window.location.pathname === to;
+  return (
+    <li className="nav-item">
+      <Link
+        to={to}
+        className="nav-link fw-bold px-3"
+        style={{
+          color: current ? '#f7931e' : 'rgba(255,255,255,0.80)',
+          borderBottom: current ? '2px solid #f7931e' : '2px solid transparent',
+          paddingBottom: '4px',
+          transition: 'all 0.2s ease',
+          fontSize: 14,
+        }}
+        onMouseEnter={e => { if (!current) { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderBottomColor = 'rgba(247,147,30,0.40)'; } }}
+        onMouseLeave={e => { if (!current) { e.currentTarget.style.color = 'rgba(255,255,255,0.80)'; e.currentTarget.style.borderBottomColor = 'transparent'; } }}
+      >
+        {label}
+      </Link>
+    </li>
   );
 }
 
