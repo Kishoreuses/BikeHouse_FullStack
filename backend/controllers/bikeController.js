@@ -64,12 +64,12 @@ exports.getBikes = async (req, res) => {
   if (model) filter.model = model;
   if (minPrice && maxPrice) filter.price = { $gte: minPrice, $lte: maxPrice };
   if (owner) filter.owner = owner;
-  const bikes = await Bike.find(filter).populate('owner', 'username location');
+  const bikes = await Bike.find(filter).populate('owner', 'username location phone');
   res.json(bikes);
 };
 
 exports.getBike = async (req, res) => {
-  const bike = await Bike.findById(req.params.id).populate('owner', 'username location');
+  const bike = await Bike.findById(req.params.id).populate('owner', 'username location phone');
   res.json(bike);
 };
 
@@ -268,6 +268,7 @@ exports.generateBikePDF = async (req, res) => {
 
     doc.fontSize(16).text('Owner Details:', { underline: true });
     doc.fontSize(12).text(`Name: ${bike.owner?.username || 'N/A'}`);
+    doc.fontSize(12).text(`Phone: ${bike.owner?.phone || 'N/A'}`);
     doc.text(`Location: ${bike.location}`);
     doc.text(`Price: ₹${bike.price}`);
     doc.text(`Description: ${bike.description}`);

@@ -419,7 +419,7 @@ function BikeMarketplace() {
                   <div style={{ marginBottom: '1rem' }}>
                     <h6 style={{ color: '#f7931e', fontWeight: 700, fontSize: '0.75rem', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10 }}>Specifications</h6>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 12px' }}>
-                      {[['Brand', selectedBike.brand], ['Model', selectedBike.model], ['Location', selectedBike.location], ['Owner', selectedBike.owner?.username || 'N/A'], ['No. of Owners', selectedBike.ownersCount], ['Kilometres Run', selectedBike.kilometresRun], ['Model Year', selectedBike.modelYear], ['Color', selectedBike.color]].map(([k, v]) => (
+                      {[['Brand', selectedBike.brand], ['Model', selectedBike.model], ['Location', selectedBike.location], ['Owner', selectedBike.owner?.username || 'N/A'], ['Phone', selectedBike.owner?.phone || 'N/A'], ['No. of Owners', selectedBike.ownersCount], ['Kilometres Run', selectedBike.kilometresRun], ['Model Year', selectedBike.modelYear], ['Color', selectedBike.color]].map(([k, v]) => (
                         <div key={k}>
                           <div style={{ color: '#6e7681', fontSize: '0.72rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.6 }}>{k}</div>
                           <div style={{ color: '#e6edf3', fontWeight: 600, fontSize: '0.88rem' }}>{v || '—'}</div>
